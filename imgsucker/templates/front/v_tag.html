@@ -1,0 +1,104 @@
+{% extends "front/base.html" %}
+{% load static %}
+{% load thumbnail %}
+
+{% block page %}
+	Free HD Wallpapers, Backgrounds, Images in {{ tag.tag }} tag
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col">
+		<div class="d-flex">
+		  <div class="mr-auto"><h1>Tag: {{ tag.tag }}</h1></div>
+		  <div class="align-self-center text-black-50">
+		  	Sort By: 
+			<div class="btn-group">
+				<button class="btn btn-danger btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{ sort|title }}
+				</button>
+				<div class="dropdown-menu">
+					{% if sort != 'date' %}
+						<a class="dropdown-item" href="{% url 'fr_tag' tag.tag 'date' 1 %}">Date</a>
+					{% endif %}
+					{% if sort != 'likes' %}
+						<a class="dropdown-item" href="{% url 'fr_tag' tag.tag 'likes' 1 %}">Likes</a>
+					{% endif %}
+					{% if sort != 'downloads' %}
+						<a class="dropdown-item" href="{% url 'fr_tag' tag.tag 'downloads' 1 %}">Downloads</a>
+					{% endif %}
+					{% if sort != 'views' %}
+						<a class="dropdown-item" href="{% url 'fr_tag' tag.tag 'views' 1 %}">Views</a>
+					{% endif %}
+				</div>
+			</div>
+		  </div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	{% for wall in wallpaper_tags %}
+	    <div class="col-md-3 mb-3">
+	    	<div class="card text-center">
+	    		{% thumbnail wall.wallpaper.wallpaper "400x250" crop="center" as im %}
+	    			<a href="{% url 'fr_wallpaper' wall.wallpaper.slugtags wall.wallpaper.id_wallpaper %}"><img class="card-img-top" src="{{ im.url }}"></a>
+	    		{% endthumbnail %}
+	    		<div class="card-body">
+					<p class="card-text">{{ wall.wallpaper.wallpaper.width }}x{{ wall.wallpaper.wallpaper.height }}
+						<br>
+					{% for ta in wall.wallpaper.tagsplit %}
+						<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
+	                {% endfor %}
+					</p>
+	    		</div>
+	    	</div>
+		</div>
+	{% endfor %}
+</div>
+{% if wallpaper_tags.paginator.num_pages > 1 %}
+<nav aria-label="Page navigation example">
+	<ul class="pagination justify-content-center">
+		{% if wallpaper_tags.number|add:-3 > 1 %}
+            <li class="page-item">
+            	<a class="page-link" href="{% url 'fr_tag' tag.tag sort 1 %}">First</a>
+            </li>
+        {% endif %}
+		{% if wallpaper_tags.has_previous %}
+            <li class="page-item">
+				<a class="page-link" href="{% url 'fr_tag' tag.tag sort wallpaper_tags.previous_page_number %}" tabindex="-1">Previous</a>
+			</li>
+        {% endif %}
+		{% for i in wallpaper_tags.paginator.page_range %}
+			{% if i <= wallpaper_tags.number|add:3 and i >= wallpaper_tags.number|add:-3 %}
+				{% if wallpaper_tags.number == i %}
+		        	<li class="page-item active">
+		            	<a class="page-link" href="#">{{ wallpaper_tags.number }} of {{ wallpaper_tags.paginator.num_pages }}<span class="sr-only">(current)</span></a>
+		        	</li>
+		        {% else %}
+		        	<li class="page-item">
+		            	<a class="page-link" href="{% url 'fr_tag' tag.tag sort i %}">{{ i }}</a>
+		        	</li>
+		        {% endif %}
+			{% endif %}
+	        
+        {% endfor %}
+		{% if wallpaper_tags.has_next %}
+            <li class="page-item">
+				<a class="page-link" href="{% url 'fr_tag' tag.tag sort wallpaper_tags.next_page_number %}">Next</a>
+			</li>
+        {% endif %}
+        {% if wallpaper_tags.number|add:3 < wallpaper_tags.paginator.num_pages %}
+            <li class="page-item">
+            	<a class="page-link" href="{% url 'fr_tag' tag.tag sort wallpaper_tags.paginator.num_pages %}">Last</a>
+            </li>
+        {% endif %}
+	</ul>
+</nav>
+{% endif %}
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

@@ -1,0 +1,79 @@
+
+
+
+{% extends "front/base.html" %}
+{% load static %}
+{% load thumbnail %}
+
+{% block page %}
+	Login
+{% endblock %}
+
+{% block head %}
+<style type="text/css"></style>
+{% endblock %}
+
+{% block content %}
+
+	<style type="text/css">
+		.vertical-center {
+  min-height: 90%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 90vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+	</style>
+<div class="row justify-content-md-center text-center vertical-center">
+	<div class="col col-lg-4 ">
+		{% if messages %}
+		  	{% for message in messages %}
+		  <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
+		  		<div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'success' %}success{% endif %}" role="alert">
+				  	{{ message }}
+				</div>
+		  	{% endfor %}
+		{% endif %}
+		<div class="card {% if form.errors %}border-danger{% endif %}">
+			<div class="card-header">
+				<h1 class="card-titile ">Log In</h1>
+			</div>
+			<div class="card-body">
+				<form method="POST" autocomplete="off" class="{% if validated %}was-validated{% else %}needs-validation{% endif %}" novalidate >
+					{% csrf_token %}
+					{{ form.non_field_errors }}
+					{% for field in form %}
+						<div class="input-group mb-3 ">
+							{{ field }}
+							<div class="input-group-append">
+							    <span class="input-group-text" id="basic-addon1"><i class="fas fa-{{ field.label }}"></i></span>
+							</div>
+						  
+						  {% if field.errors %}
+						<div class="invalid-feedback d-block">
+				          {{ field.errors.as_text }}
+				        </div>
+					  {% endif %}
+						 <!--  <span class="glyphicon glyphicon-user form-control-feedback"></span> -->
+						</div>
+					{% endfor %}
+					<button type="submit" class="btn btn-success btn-block">Log In</button>
+				</form>
+				<div class="dropdown-divider"></div>
+				<a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-danger btn-block" data-dismiss="modal"><i class="fab fa-google-plus-g"></i> Log In with Google</a>
+				<button type="button " class="btn btn-info btn-block" data-dismiss="modal"><i class="fab fa-twitter"></i> Log In with Twitter</button>
+				<button type="button " class="btn btn-primary btn-block" data-dismiss="modal"><i class="fab fa-facebook-f "></i> Log In with Facebook</button>
+			</div>
+
+			<div class="card-footer">
+				<p>Don't have an account? <a href="{% url 'fr_register' %}"> Sign Up </a></p>
+			</div>
+		</div>
+		
+	</div>
+
+</div>
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

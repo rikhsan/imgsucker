@@ -1,0 +1,90 @@
+
+
+
+{% extends "front/base.html" %}
+{% load static %}
+{% load thumbnail %}
+
+{% block page %}
+	Register
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+<style type="text/css">
+.vertical-center {
+min-height: 90%;  /* Fallback for browsers do NOT support vh unit */
+min-height: 90vh; /* These two lines are counted as one :-)       */
+
+display: flex;
+align-items: center;
+}
+</style>
+<div class="row justify-content-md-center text-center vertical-center">
+	<div class="col col-lg-4 ">
+		{% if messages %}
+		  	{% for message in messages %}
+		  <!-- <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li> -->
+		  		<div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'success' %}success{% endif %}" role="alert">
+				  	{{ message }}
+				</div>
+		  	{% endfor %}
+		{% endif %}
+
+		<div class="card {% if form.errors %}border-danger{% endif %}">
+			<div class="card-header">
+				<h1 class="card-titile ">Sign Up</h1>
+			</div>
+			<div class="card-body">
+				<form method="POST" autocomplete="off" class="{% if validated %}was-validated{% else %}needs-validation{% endif %}" novalidate>
+					{% csrf_token %}
+					{{ form.non_field_errors }}
+					{% for field in form %}
+						<div class="input-group mb-3">
+							{{ field }}
+							<div class="input-group-append ">
+							    <span class="input-group-text" id="basic-addon1" ><i class="fas fa-{{ field.label }}"></i></span>
+							</div>
+							
+						  {% if field.errors %}
+							<div class="invalid-feedback d-block">
+					          {{ field.errors.as_text }}
+					        </div>
+						  {% endif %}
+						 <!--  <span class="glyphicon glyphicon-user form-control-feedback"></span> -->
+						</div>
+					{% endfor %}
+
+					<button type="submit" class="btn btn-success btn-block">Register</button>
+				</form>
+			</div>
+
+			<div class="card-footer">
+				<p>Already have an account? <a href="{% url 'fr_login' %}"> Log In </a></p>
+			</div>
+		</div>
+
+		
+	</div>
+
+</div>
+{% endblock %}
+
+{% block foot %}
+<script type="text/javascript">
+	{% for field in form %}
+		{% if field.errors %}
+			$('input[name={{ field.name }}]').val('');
+
+
+		{% endif %}
+	{% endfor %}
+
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
+</script>
+{% endblock %}

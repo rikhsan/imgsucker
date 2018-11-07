@@ -1,0 +1,131 @@
+{% extends "front/base.html" %}
+{% load static %}
+{% load thumbnail %}
+
+{% block page %}
+	User 
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-4">
+		<div class="card mb-3">
+			
+			<div class="card-body">
+				{% if user2.avatar %}
+					<img class="img-fluid img-thumbnail" src="{{ user2.avatar.url }}">
+				{% else %}
+					<img class="img-fluid img-thumbnail" src="{% static ''%}img/user-default.png">
+				{% endif %}
+				<table class="table">
+					<tr>
+						<td><strong>Username</strong></td>
+						<td>{{user2.username}}</td>
+					</tr>
+					<tr>
+						<td><strong>Likes</strong></td>
+						<td>{{likes.count}}</td>
+					</tr>
+					<tr>
+						<td><strong>Favorites</strong></td>
+						<td>{{favorites.count}}</td>
+					</tr>
+					<tr>
+						<td><strong>Uploads</strong></td>
+						<td>{{uploads.count}}</td>
+					</tr>
+					<tr>
+						<td><strong>Member Since</strong></td>
+						<td>{{ user2.date_joined }}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<nav class="mb-3">
+			<div class="nav nav-tabs" id="nav-tab" role="tablist">
+				<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-favorites" role="tab" aria-controls="nav-home" aria-selected="true">Favorites</a>
+				<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-likes" role="tab" aria-controls="nav-profile" aria-selected="false">Likes</a>
+				<a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-uploads" role="tab" aria-controls="nav-contact" aria-selected="false">Uploads</a>
+			</div>
+		</nav>
+		<div class="tab-content" id="nav-tabContent">
+			<div class="tab-pane fade show active" id="nav-favorites" role="tabpanel" aria-labelledby="nav-home-tab">
+				<div class="row">
+					{% for fav in favorites %}
+					    <div class="col-sm-4 mb-4">
+					    	<div class="card">
+					    		{% thumbnail fav.wallpaper.wallpaper "400x250" crop="center" as im %}
+					    			<a href="{% url 'fr_wallpaper' fav.wallpaper.slugtags fav.wallpaper.id_wallpaper %}"><img class="card-img-top" src="{{ im.url }}"></a>
+					    		{% endthumbnail %}
+					    		<div class="card-body text-center">
+									<p class="card-text">{{ fav.wallpaper.wallpaper.width }}x{{ fav.wallpaper.wallpaper.height }}
+										<br>
+									{% for ta in fav.wallpaper.tagsplit %}
+										<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
+					                {% endfor %}
+									</p>
+					    		</div>
+
+					    	</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="tab-pane fade" id="nav-likes" role="tabpanel" aria-labelledby="nav-profile-tab">
+				<div class="row">
+					{% for lik in likes %}
+					    <div class="col-sm-4 mb-4">
+					    	<div class="card">
+					    		{% thumbnail lik.wallpaper.wallpaper "400x250" crop="center" as im %}
+					    			<a href="{% url 'fr_wallpaper' lik.wallpaper.slugtags lik.wallpaper.id_wallpaper %}"><img class="card-img-top" src="{{ im.url }}"></a>
+					    		{% endthumbnail %}
+					    		<div class="card-body text-center">
+									<p class="card-text">{{ lik.wallpaper.wallpaper.width }}x{{ lik.wallpaper.wallpaper.height }}
+										<br>
+									{% for ta in lik.wallpaper.tagsplit %}
+										<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
+					                {% endfor %}
+									</p>
+					    		</div>
+
+					    	</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="tab-pane fade" id="nav-uploads" role="tabpanel" aria-labelledby="nav-contact-tab">
+				<div class="row">
+					{% for up in uploads %}
+					    <div class="col-sm-4 mb-4">
+					    	<div class="card">
+					    		{% thumbnail up.wallpaper "400x250" crop="center" as im %}
+					    			<a href="{% url 'fr_wallpaper' up.slugtags up.id_wallpaper %}"><img class="card-img-top" src="{{ im.url }}"></a>
+					    		{% endthumbnail %}
+					    		<div class="card-body text-center">
+									<p class="card-text">{{ up.wallpaper.width }}x{{ up.wallpaper.height }}
+										<br>
+									{% for ta in up.tagsplit %}
+										<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
+					                {% endfor %}
+									</p>
+					    		</div>
+
+					    	</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		
+
+	</div>
+</div>
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends "front/base.html" %}
+{% load static %}
+{% load thumbnail %}
+
+{% block page %}
+	Download Wallpaper 
+  	{% for ta in wallpaper.tagsplit %}
+		{{ta.tag.tag|title}}
+		{% if not forloop.last %},{% endif %}
+    {% endfor %}
+    {{ w }}x{{ h }}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-2">
+		<ul class="list-group">
+			<li class="list-group-item">
+		    	<a href="{% url 'fr_home' %}">All</a>
+		    <!-- <span class="badge badge-primary badge-pill">10</span> -->
+			{% for cat in categories %}
+				<li class="list-group-item">
+			    	<a href="{% url 'fr_category' cat.category|slugify %}">{{ cat.category }}</a>
+			    <!-- <span class="badge badge-primary badge-pill">10</span> -->
+			  </li>
+	        {% endfor %}
+		</ul>
+	</div>
+	<div class="col-lg-10">
+		<div class="row">
+			<div class="col">
+				<div class="d-flex">
+				  	<div class="mr-auto">
+				  		{% if wall_res %}
+							<h1>Download {{ wall_res.title }}</h1>
+						{% else %}
+							<h1>
+						  	Download Wallpaper 
+						  	{% for ta in wallpaper.tagsplit %}
+								{{ta.tag.tag|title}}
+								{% if not forloop.last %},{% endif %}
+					        {% endfor %} 
+					        {{ w }}x{{ h }}
+					  		</h1>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<div class="row mt-3">
+					<div class="col">
+						<div class="card" >
+							<img class="card-img-top" src="{% url 'fr_image' wallpaper.tagtotitleslugify wallpaper.id_wallpaper w h %}" alt="...">
+							<div class="card-body">
+								<table class="table">
+									<tr>
+										<th class=""><p class="card-text">Tag</p></th>
+										<td>
+											<p class="card-text">
+												{% for ta in wallpaper.tagsplit %}
+													<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %},{% endif %}
+							                	{% endfor %}
+											</p>
+						            	</td>
+									</tr>
+									<tr>
+										<th>Category </th>
+										<td>
+											<a href="{% url 'fr_category' wallpaper.category.category|slugify %}">{{ wallpaper.category.category }}</a>
+						            	</td>
+									</tr>
+									<tr>
+										<th>Colors </th>
+										<td>
+											{% for colo in wallpaper.colorlist %}
+												<a href="{% url 'fr_color' colo %}" class="badge badge-primary" title="#{{ colo }}" style="background-color: #{{ colo }}; color: white">#{{ colo }}</a>
+											{% endfor %}
+						            	</td>
+									</tr>
+									<tr>
+										<th>Size </th>
+										<td>
+											{{ w }}x{{ h }}
+											
+						            	</td>
+									</tr>
+									<tr>
+										<th>Uploaded </th>
+										<td>
+											{{ wallpaper.timehuman }} <strong>by</strong> <a href="">{{ wallpaper.uploader.username }}</a>
+						            	</td>
+									</tr>
+									<tr>
+										<th>Copyright </th>
+										<td>
+											{{ wallpaper.owner }}
+						            	</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col">
+						<div class="card" >
+							<div class="card-body">
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="col"><a href="{% url 'fr_image' wallpaper.tagtotitleslugify wallpaper.id_wallpaper w h %}" target="_blank" type="button" class="btn btn-dark btn-block"><i class="fas fa-download"></i><br>DOWNLOAD {{ w }}x{{ h }}</a></div>
+									</div>
+									<div class="col-sm-6">
+										<div class="row ">
+											<div class="col">
+												<p class="card-text text-center font-weight-bold">
+													Views
+													<br>
+													{{ wallpaper.views }}
+												</p>
+												
+											</div>
+											<div class="col">
+												<p class="card-text text-center font-weight-bold">
+													Downloads
+													<br>
+													{{ wallpaper.downloads }}
+												</p>
+												
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		    </div>
+		</div>
+		<div class="row mt-3">
+			<div class="col">
+				<h2>Related Wallpaper</h2>
+			</div>
+		</div>
+		<div class="row mt-3">
+			{% for wall in relatedwalls %}
+			    <div class="col-sm-4 mb-4">
+			    	<div class="card  ">
+			    		{% thumbnail wall.wallpaper wh_thumb crop="center" as im %}
+			    			<a href="{% url 'fr_download' wall.tagtotitleslugify wall.id_wallpaper w h%}"><img class="card-img-top" src="{{ im.url }}"></a>
+			    		{% endthumbnail %}
+			    		<div class="card-body text-center">
+							<p class="card-text">{{ w }}x{{ h }}
+								<br>
+							{% for ta in wall.tagsplit %}
+								<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
+			                {% endfor %}
+							</p>
+			    		</div>
+
+			    	</div>
+				</div>
+			{% endfor %}
+		</div>
+
+	</div>
+</div>
+
+<div class="row">
+	<div class="col">
+		<center>
+			{% for ta in tags %}
+				<a href="" class="mr-3">{{ ta.tag }}</a>
+            {% endfor %}
+
+		</center>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block foot %}
+{% endblock %}

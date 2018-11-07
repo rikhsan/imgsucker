@@ -1,0 +1,165 @@
+{% extends "admin2/base.html" %}
+{% load static %}
+{% block page %}
+{{page}} | 
+{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-xs-12">
+		{% if messages %}
+		    {% for message in messages %}
+
+		    {% endfor %}
+		{% endif %}
+		<div class="box" id="sucker">
+			<div class="box-header with-border">
+			  	<h3 class="box-title">Cucking wallpapercraft.com</h3>
+			</div><!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<form id="grabform">
+							{% csrf_token %}
+							<div class="form-group">
+								<label for="start">Start</label>
+								<input type="number" name="start" class="form-control" placeholder="Start" autocomplete="off" required="" id="start">
+							</div>
+							<div class="form-group">
+								<label for="end">End</label>
+								<input type="number" name="end" class="form-control" placeholder="End" autocomplete="off" required="" id="end">
+							</div>
+					      	<div class="row">
+								<!-- /.col -->
+								<div class="col-xs-12">
+								  <button id="click_suck" type="button" class="btn btn-primary btn-block btn-flat">Suck</button>
+								</div>
+								<!-- /.col -->
+							</div>
+					    </form>
+						
+					    
+					</div>
+				</div>
+				
+			</div><!-- /.box-body -->
+		</div><!-- /.box -->
+
+		<div id="log" class="box">
+			<div class="box-header with-border">
+			  	<i id="tanda" class="fa fa-circle"></i><h3 class="box-title">Log </h3>
+			</div><!-- /.box-header -->
+			<div class="box-body">
+				<table id="isilog" class="table table-bordered">
+					<tr>
+						<th>id</th>
+						<th>status</th>
+					</tr>
+				</table>
+			</div><!-- /.box-body -->
+		</div><!-- /.box -->
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block foot %}
+<script type="text/javascript">
+	var ajaxManager = (function() {
+		 var requests = [];
+
+		 return {
+		    addReq:  function(opt) {
+		        requests.push(opt);
+		    },
+		    removeReq:  function(opt) {
+		        if( $.inArray(opt, requests) > -1 )
+		            requests.splice($.inArray(opt, requests), 1);
+		    },
+		    run: function() {
+		        var self = this,
+		            oriSuc;
+
+		        if( requests.length ) {
+		            oriSuc = requests[0].complete;
+
+		            requests[0].complete = function() {
+		            	console.log('')
+		                 if( typeof(oriSuc) === 'function' ) oriSuc();
+		                 requests.shift();
+		                 self.run.apply(self, []);
+		            };   
+
+		            $.ajax(requests[0]);
+		            $('#tanda').removeClass('text-success');
+		            $('#tanda').addClass('text-warning');
+		            // console.log('start request')
+		        } else {
+		        	// console.log('no request')
+		        	$('#tanda').removeClass('text-warning');
+		        	$('#tanda').addClass('text-success');
+		          self.tid = setTimeout(function() {
+		             self.run.apply(self, []);
+		          }, 1000);
+		        }
+		    },
+		    stop:  function() {
+		        requests = [];
+		        clearTimeout(this.tid);
+		    }
+		 };
+	}());
+
+	ajaxManager.run(); 
+
+	
+
+	$("#click_suck").click(function() {
+		counter = 0
+		var start = $("#start").val()
+		var end =  $("#end").val()
+	  	// alert('asdasd'+start+end)
+	  	isilog = '<tr><td>add queue '+start+'-'+end+'</td><td>queued</td></tr>'
+		// console.log(d);
+	  	for (i = start; i <=end; i++) { 
+		    // alert(i)
+		    ajaxManager.addReq({
+				type: "POST",
+			  	url: "{% url 'ajax_grabhost_wallpaperscraft0com_single'%}",
+			  	data: { 
+					id: i,
+					csrfmiddlewaretoken: '{{ csrf_token }}',
+				},
+			  	dataType: 'json',
+			  	beforeSend: function(xhr) {
+			    	// console.log(xhr);
+			    	console.log(xhr);
+			   	},
+			  	success: function(d) {
+			    	// alert(d)
+			    	isilog = '<tr><td>'+(parseInt(start)+counter)+'</td><td>'+d.title+'</td></tr>'
+			    	console.log(d);
+			    	// myFunc();
+			   	},
+			   	error: function (d) {
+	                // console.log('An error occurred.');
+	                isilog = '<tr><td>'+(parseInt(start)+counter)+'</td><td></td>Error</tr>'
+	                // console.log(data);
+	            },
+	            complete: function () {
+	                // console.log('done');
+	                counter++;
+	                $('#isilog').prepend(isilog)
+	            },
+			})
+		}
+	});
+
+</script>
+
+{% endblock %}

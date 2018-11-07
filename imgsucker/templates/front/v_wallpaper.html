@@ -1,0 +1,540 @@
+{% extends "front/base.html" %}
+{% load social_share %}
+
+{% load static %}
+{% load thumbnail %}
+
+{% block page %}
+	Wallpaper 
+  	{% for ta in wallpaper.tagsplit %}
+		{{ta.tag.tag|title}}
+		{% if not forloop.last %},{% endif %}
+    {% endfor %}
+{% endblock %}
+
+{% block head %}
+<style type="text/css">
+.container {padding:20px;}
+/*.popover {width:350px;max-width:1500px;}*/
+.popover-content h4 {
+  color: #00A1FF;
+}
+.popover-content h4 small {
+  color: black;
+}
+.popover-content button.btn-primary {
+  color: #00A1FF;
+  border-color:#00A1FF;
+  background:white;
+}
+
+.popover-content button.btn-default {
+  color: gray;
+  border-color:gray;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-2">
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item">
+		    	<a href="{% url 'fr_home' %}">All</a>
+		    <!-- <span class="badge badge-primary badge-pill">10</span> -->
+			{% for cat in categories %}
+				<li class="list-group-item">
+			    	<a href="{% url 'fr_category' cat.category|slugify|lower %}">{{ cat.category }}</a>
+			    <!-- <span class="badge badge-primary badge-pill">10</span> -->
+			  </li>
+	        {% endfor %}
+		</ul>
+	</div>
+	<div class="col-lg-7">
+		<div class="row">
+			<div class="col">
+				<div class="d-flex">
+				  	<div class="mr-auto">
+				  		<h1>
+					  	Wallpaper 
+					  	{% for ta in wallpaper.tagsplit %}
+							{{ta.tag.tag|title}}
+							{% if not forloop.last %},{% endif %}
+				        {% endfor %}
+				  		</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<div class="row mt-3">
+					<div class="col">
+						<div class="card" >
+							{% thumbnail wallpaper.wallpaper "752" crop="center" as im %}
+								<img class="card-img-top" src="{{ im.url }}" alt="...">
+							{% endthumbnail %}
+							<div class="card-body">
+								<table class="table">
+									<tr>
+										<th class=""><p class="card-text">Tag</p></th>
+										<td>
+											<p class="card-text">
+												{% for ta in wallpaper.tagsplit %}
+													<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %},{% endif %}
+							                	{% endfor %}
+											</p>
+						            	</td>
+									</tr>
+									<tr>
+										<th>Category </th>
+										<td>
+											<a href="{% url 'fr_category' wallpaper.category.category|slugify|lower %}">{{ wallpaper.category.category }}</a>
+						            	</td>
+									</tr>
+									<tr>
+										<th>Colors </th>
+										<td>
+											{% for colo in wallpaper.colorlist %}
+												<a href="{% url 'fr_color' colo %}" class="badge badge-primary" title="#{{ colo }}" style="background-color: #{{ colo }}; color: white">#{{ colo }}</a>
+											{% endfor %}
+						            	</td>
+									</tr>
+									
+									<tr>
+										<th>Uploaded </th>
+										<td>
+											{{ wallpaper.timehuman }} <strong>by</strong> <a href="{% url 'fr_userprofile' wallpaper.uploader.username %}">{{ wallpaper.uploader.username }}</a>
+						            	</td>
+									</tr>
+									<tr>
+										<th>Copyright </th>
+										<td>
+											{{ wallpaper.owner }}
+						            	</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>
+											 {{ wallpaper.views }} <strong>views</strong>, {{ wallpaper.views }} <strong>favorited</strong> and {{ wallpaper.downloads }} <strong>downloads</strong>
+						            	</td>
+
+									</tr>
+
+<!-- 									<tr>
+										<td></td>
+										<td>
+											<a id="btnlike" href="#" class="text-secondary"><i class="fas fa-thumbs-up"></i> 100</a>
+											<a id="btndislike" href="#" class="text-secondary mr-3"><i class="fas fa-thumbs-down"></i> 100</a>
+											<a href="" class="text-warning mr-3"><i class="fas fa-star"></i> Favorite</a>
+											<a href="" class="text-secondary"><i class="fas fa-share"></i> Share</a>
+										</td>
+									</tr> -->
+									
+									<tr>
+										<th>Original Size </th>
+										<td>
+											<a href="{% url 'fr_download' wallpaper.tagtotitleslugify wallpaper.id_wallpaper wallpaper.wallpaper.width wallpaper.wallpaper.height %}">{{ wallpaper.wallpaper.width }}x{{ wallpaper.wallpaper.height }}</a>
+											
+						            	</td>
+									</tr>
+									
+									
+								</table>
+							</div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="row mt-3">
+					<div class="col">
+						<div class="card" >
+							<div class="card-body">
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="row mb-3">
+											<div class="col"><button id="btnlike" type="button" class="btn {% if is_liked %}btn-success{% else %}btn-secondary{% endif %} btn-block"><i class="fas fa-thumbs-up"></i> {% if wallpaper.likes %}{{ wallpaper.likes }}{% endif %}</button></div>
+											<div class="col"><button id="btndislike" type="button" class="btn {% if is_disliked %}btn-danger{% else %}btn-secondary{% endif %} btn-block"><i class="fas fa-thumbs-down"></i> {% if wallpaper.dislikes %}{{ wallpaper.dislikes }}{% endif %}</button></div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="row mb-3">
+											<div class="col"><button id="btnfavorite" type="button" class="btn {% if is_favorited %}btn-warning{% else %}btn-secondary{% endif %} btn-block"><i class="fas fa-star"></i> {% if is_favorited %}Favorited{% else %}Favorite{% endif %}</button></div>
+											<div class="col"><button id="brnshare" type="button" class="btn btn-primary btn-block" data-placement="bottom" data-toggle="popover" data-container="body" data-placement="left" data-html="true"><i class="fas fa-share"></i> Share<br></button></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col">
+						<div class="card" >
+							<div class="card-body">
+								<h3 class="card-title">Available Resolutions for You</h3>
+
+								<table class="table">
+									{% for key, cat in availableresolutions.items %}
+										<tr>
+										<td><p class="card-text">
+										{% if key is 0 %}
+											<strong>Fullscreen</strong>
+										{% elif key is 1 %}
+											<strong>Widescreen</strong>
+										{% elif key is 2 %}
+											<strong>Mobile Phone</strong>
+										{% elif key is 3 %}
+											<strong>Tablet</strong>
+										{% endif %}
+										</p>
+										
+										{% for key2, ress in cat.items %}
+											<p class="card-text">
+											{% for dev in ress %}
+												{{ dev.resolution }}
+												{% if not forloop.last %},{% endif %}
+												{% if forloop.last %}<a href="{% url 'fr_download' wallpaper.tagtotitleslugify wallpaper.id_wallpaper dev.w dev.h %}">{{ dev.w }}x{{ dev.h }}</a>{% endif %}
+											{% endfor %}
+											</p>
+										{% endfor %}
+										
+										</td>
+										</tr>
+									{% endfor %}
+								</table>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- <div class="row mt-3">
+					<div class="col">
+						<div class="card" >
+							<div class="card-body">
+								<table class="">
+									<tr>
+										<th>Likes </th>
+										<td>
+											{{ wallpaper.dislikes }}
+						            	</td>
+						            	<th>Downloaded </th>
+										<td>
+											{{ wallpaper.downloads }}
+											
+						            	</td>
+									</tr>
+									<tr>
+										<th>Dislikes </th>
+										<td>
+											{{ wallpaper.dislikes }}
+						            	</td>
+						            	<th>Rating </th>
+										<td>
+											{{ wallpaper.rating }}
+						            	</td>
+									</tr>
+									<tr>
+										<th>Views </th>
+										<td>
+											{{ wallpaper.views }}
+						            	</td>
+									</tr>
+									<tr>
+									</tr>
+								</table>
+
+							</div>
+						</div>
+					</div>
+				</div> -->
+
+				<!-- <div class="row mt-3">
+					<div class="col">
+						<div class="card">
+							<div class="card-body" >
+
+								<h3 class="card-title">Available Resolutions for You</h3>
+
+								<ul>
+									{% for reso in wallpaper.resolutionsplit %}
+										{% ifchanged reso.resolution.resolution %}
+								            <li>{{ reso.resolution.resolution }}</li>
+								        {% else %}
+								        {% endifchanged %}
+								         	<a href="{% url 'fr_download' wallpaper.tagtotitleslugify wallpaper.id_wallpaper reso.resolution.w reso.resolution.h %}">{{ reso.resolution.w }}x{{ reso.resolution.h }}</a>
+							        {% endfor %}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div> -->
+
+		    </div>
+		</div>
+		<!-- <div class="row">
+			<div class="col">
+				<div id="disqus_thread"></div>
+				<script>
+
+				/**
+				*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+				/*
+				var disqus_config = function () {
+				this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+				this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+				};
+				*/
+				(function() { // DON'T EDIT BELOW THIS LINE
+				var d = document, s = d.createElement('script');
+				s.src = 'https://image-sucker.disqus.com/embed.js';
+				s.setAttribute('data-timestamp', +new Date());
+				(d.head || d.body).appendChild(s);
+				})();
+				</script>
+				<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			</div>
+		</div> -->
+	</div>
+	<div class="col-md-3">
+		<div class="row">
+			<div class="col">
+				<h2> Related</h2>
+			</div>
+		</div>
+		<div class="row">
+			{% for wall in relatedwalls %}
+			    <div class="col-sm-12 mb-3">
+			    	<div class="card text-center ">
+			    		{% thumbnail wall.wallpaper "400x250" crop="center" as im %}
+			    			<a href="{% url 'fr_wallpaper' wall.slugtags wall.id_wallpaper %}"><img class="card-img-top" src="{{ im.url }}"></a>
+			    		{% endthumbnail %}
+			    		<div class="card-body">
+							<p class="card-text">{{ wall.wallpaper.width }}x{{ wall.wallpaper.height }} 
+								<br>
+							{% for ta in wall.tagsplit %}
+									<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
+			                {% endfor %}
+							</p>
+			    		</div>
+			    	</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col">
+		<center>
+			{% for ta in tags %}
+				<a href="{% url 'fr_tag' ta.tag|slugify %}" class="mr-3">{{ ta.tag }}</a>
+            {% endfor %}
+		</center>
+	</div>
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block foot %}
+<div id="popover-content" class="hide">
+	<center>
+		<a href="" class="btn btn-primary rounded-circle mb-2"><i class="fab fa-facebook"></i></a>
+		<a href="" class="btn btn-info rounded-circle mb-2"><i class="fab fa-twitter"></i></a>
+		<a href="" class="btn btn-danger rounded-circle mb-2"><i class="fas fa-link"></i></a>
+		<a href="" class="btn btn-dark rounded-circle mb-2"><i class="fab fa-reddit-alien"></i></a>
+		<a href="" class="btn btn-warning rounded-circle mb-2"><i class="fas fa-envelope"></i></a>
+		<a href="" class="btn btn-success rounded-circle mb-2"><i class="fas fa-link"></i></a>
+	</center>
+	
+</div>
+<script type="text/javascript">
+	$("[data-toggle=popover]").popover({
+		html: true, 
+		content: function() {
+		  return $('#popover-content').html();
+		}
+	});
+
+	var likes= {{ wallpaper.likes }};
+	var dislikes= {{ wallpaper.dislikes }};
+	
+	{% if user.is_authenticated %}
+       	$( "#btnlike" ).click(function() {
+       		$.ajax({
+				type: "POST",
+			  	url: "{% url 'ajax_useraction'%}",
+			  	data: { 
+			  		id_wallpaper: {{ wallpaper.id_wallpaper }},
+					is_liked: ($( "#btnlike" ).hasClass( "btn-secondary") ? 1 : 0),
+					is_min_dislike: ($( "#btndislike" ).hasClass( "btn-danger") ? 1 : 0),
+					// is_favorited: ($( "#btnfavorite" ).hasClass( "btn-warning" ) ? 1 : 0),
+					csrfmiddlewaretoken: '{{ csrf_token }}',
+				},
+			  	dataType: 'json',
+			  	beforeSend: function(xhr) {
+			    	console.log(xhr);
+			    	$('#btnlike').prop('disabled', true);
+	       			$('#btndislike').prop('disabled', true);
+
+			   	},
+			  	success: function(d) {
+			    	// alert(d)
+			    	console.log(d);
+			    	if($( "#btnlike" ).hasClass( "btn-success"))
+					{
+						$( "#btnlike" ).removeClass( "btn-success" ).addClass( "btn-secondary" );
+						likes -= 1;
+						$( "#btnlike" ).html('<i class="fas fa-thumbs-up"></i> '+(likes ? likes : ''));
+
+					}else
+					{
+						$( "#btnlike" ).removeClass( "btn-secondary" ).addClass( "btn-success" );
+						
+						likes += 1;
+						$( "#btnlike" ).html('<i class="fas fa-thumbs-up"></i> '+(likes ? likes : ''));
+					}
+
+					if($( "#btndislike" ).hasClass( "btn-danger"))
+					{
+						dislikes -= 1;
+						$( "#btndislike" ).removeClass( "btn-danger" ).addClass( "btn-secondary" );
+						$( "#btndislike" ).html('<i class="fas fa-thumbs-down"></i> '+(dislikes ? dislikes : ''));
+					}
+			   	},
+			   	error: function (data) {
+	                console.log('An error occurred.');
+	                // console.log(data);
+	            },
+	            complete: function () {
+	                console.log('done');
+	                $('#btnlike').prop('disabled', false);
+					$('#btndislike').prop('disabled', false);
+	            },
+			})
+		});
+
+		$( "#btndislike" ).click(function() {
+			$.ajax({
+				type: "POST",
+			  	url: "{% url 'ajax_useraction'%}",
+			  	data: { 
+			  		id_wallpaper: {{ wallpaper.id_wallpaper }},
+					// is_liked: 0,
+					is_disliked: ($( "#btndislike" ).hasClass( "btn-secondary") ? 1 : 0),
+					is_min_like: ($( "#btnlike" ).hasClass( "btn-success") ? 1 : 0),
+					// is_favorited: ($( "#btnfavorite" ).hasClass( "btn-warning" ) ? 1 : 0),
+					csrfmiddlewaretoken: '{{ csrf_token }}',
+				},
+			  	dataType: 'json',
+			  	beforeSend: function(xhr) {
+			    	console.log(xhr);
+			    	$('#btnlike').prop('disabled', true);
+	       			$('#btndislike').prop('disabled', true);
+
+			   	},
+			  	success: function(d) {
+			    	// alert(d)
+			    	console.log(d);
+			    	if($( "#btndislike" ).hasClass( "btn-danger"))
+					{
+						$( "#btndislike" ).removeClass( "btn-danger" ).addClass( "btn-secondary" );
+						dislikes -= 1;
+						$( "#btndislike" ).html('<i class="fas fa-thumbs-down"></i> '+(dislikes ? dislikes : ''));
+					}else
+					{
+						$( "#btndislike" ).removeClass( "btn-secondary" ).addClass( "btn-danger" );
+						dislikes += 1;
+						$( "#btndislike" ).html('<i class="fas fa-thumbs-down"></i> '+(dislikes ? dislikes : ''));
+					}
+
+					if($( "#btnlike" ).hasClass( "btn-success"))
+					{
+						likes -= 1;
+						// alert(likes)
+						$( "#btnlike" ).removeClass( "btn-success" ).addClass( "btn-secondary" );
+						$( "#btnlike" ).html('<i class="fas fa-thumbs-up"></i> '+(likes ? likes : ''));
+					}
+			   	},
+			   	error: function (data) {
+	                console.log('An error occurred.');
+	                // console.log(data);
+	            },
+	            complete: function () {
+	                console.log('done');
+	                $('#btnlike').prop('disabled', false);
+					$('#btndislike').prop('disabled', false);
+	            },
+			})
+		});
+
+		var btnvaf = $( "#btnfavorite" )
+		btnvaf.click(function() {
+			$.ajax({
+				type: "POST",
+			  	url: "{% url 'ajax_useraction'%}",
+			  	data: { 
+			  		id_wallpaper: {{ wallpaper.id_wallpaper }},
+					// is_liked: 0,
+					// is_disliked: ($( "#btndislike" ).hasClass( "btn-secondary") ? 1 : 0),
+					// is_min_like: ($( "#btnlike" ).hasClass( "btn-success") ? 1 : 0),
+					is_favorited: ($( "#btnfavorite" ).hasClass( "btn-secondary" ) ? 1 : 0),
+					csrfmiddlewaretoken: '{{ csrf_token }}',
+				},
+			  	dataType: 'json',
+			  	beforeSend: function(xhr) {
+			    	console.log(xhr);
+			    	btnvaf.prop('disabled', true);
+
+			   	},
+			  	success: function(d) {
+			    	// alert(d)
+			    	console.log(d);
+			    	if (btnvaf.hasClass( "btn-secondary" ))
+					{
+						btnvaf.removeClass( "btn-secondary" ).addClass( "btn-warning" );
+						btnvaf.html('<i class="fas fa-star"></i> Favorited');
+					}else if(btnvaf.hasClass( "btn-warning" ))
+					{
+						btnvaf.removeClass( "btn-warning" ).addClass( "btn-secondary" );
+						btnvaf.html('<i class="fas fa-star"></i> Favorite');
+					}
+			   	},
+			   	error: function (data) {
+	                console.log('An error occurred.');
+	                // console.log(data);
+	            },
+	            complete: function () {
+	                console.log('done');
+	                btnvaf.prop('disabled', false);
+	            },
+			})
+		});
+	{% else %}
+		
+		$( "#btnlike" ).click(function() {
+			$('#modallogin').modal('show');
+		});
+
+		$( "#btndislike" ).click(function() {
+			$('#modallogin').modal('show');
+		});
+
+		var btnvaf = $( "#btnfavorite" )
+		btnvaf.click(function() {
+			$('#modallogin').modal('show');
+		});
+    {% endif %}
+	
+	
+
+</script>
+{% endblock %}

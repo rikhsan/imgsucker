@@ -1,0 +1,365 @@
+{% extends "admin2/base.html" %}
+{% load static %}
+{% block page %}
+{{page}} | 
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+
+<style type="text/css">
+	.gallery_product
+	{
+	    margin-bottom: 30px;
+	}
+	/* Bottom left text */
+	.bottom-left {
+	    position: absolute;
+	    bottom: 8px;
+	    left: 16px;
+	}
+	.top-right {
+	    position: absolute;
+	    top: 8px;
+	    right: 16px;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-xs-12">
+		{% if messages %}
+		    {% for message in messages %}
+
+		    {% endfor %}
+		{% endif %}
+		<div class="box" id="sucker">
+			<div class="box-header with-border">
+			  	<h3 class="box-title">Sucker</h3>
+			</div><!-- /.box-header -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<form id="grabform">
+							{% csrf_token %}
+							{{ form.non_field_errors }}
+							{% for field in form %}
+							<div class="form-group{% if field.errors %}has-error{% endif %}">
+								{{ field.label_tag }}
+							  {{ field }}
+							  
+							  {% if field.help_text %}
+							    <span class="help-block">{{ field.help_text }}</span>
+							  {% endif %}
+							  {% for error in field.errors %}
+							    <span class="help-block">{{ error }}</span>
+							  {% endfor %}
+							 <!--  <span class="glyphicon glyphicon-user form-control-feedback"></span> -->
+							</div>
+							{% endfor %}
+					      	<div class="row">
+								<!-- /.col -->
+								<div class="col-xs-12">
+								  <button type="submit" class="btn btn-primary btn-block btn-flat">Suck</button>
+								</div>
+								<!-- /.col -->
+							</div>
+					    </form>
+						
+					    
+					</div>
+				</div>
+				
+			</div><!-- /.box-body -->
+		</div><!-- /.box -->
+
+		<div id="result" class="box" style="display: none;">
+			<div class="box-header with-border">
+			  	<h3 class="box-title">Result for keyword: <span id="kw"></span></h3>
+			</div><!-- /.box-header -->
+			<div class="box-body">
+				<div class="overlay" id="pace">
+	              <i class="fa fa-refresh fa-spin"></i>
+	            </div>
+				<div class="row" id="resultbox">
+
+				</div>
+			</div><!-- /.box-body -->
+		</div><!-- /.box -->
+    </div>
+</div>
+<button type="button" class="btn btn-info btn-lg myModal" data-toggle="modal" data-target="#myModal" data-book-id="my_id_value">Open Modal</button>
+<button type="button" id="test">Hit me</button>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+	<div class="overlay" id="pace2">
+		<i class="fa fa-refresh fa-spin"></i>
+	</div>
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Submit Wallpaper</h4>
+      </div>
+      <form id="submitwallpaperform">
+      <div class="modal-body">
+      	<img id="displayimg" src="{% static ''%}img/nr.jpg" style="width: 100%; margin-bottom: 30px" class="img-responsive">
+      	<br>
+<!--       	<div class="row">
+      		<div id="col1" class="col-xs-2" style="background-color:rgb(255, 99, 71)"></div>
+      		<div id="col2" class="col-xs-2" style="background-color:rgb(100, 99, 23)"></div>
+      		<div id="col3" class="col-xs-2" style="background-color:rgb(200, 99, 71)"></div>
+      		<div id="col4" class="col-xs-2" style="background-color:rgb(300, 99, 71)"></div>
+      		<div id="col5" class="col-xs-2" style="background-color:rgb(400, 99, 71)"></div>
+      		<div id="col6" class="col-xs-2" style="background-color:rgb(500, 99, 71)"></div>
+      	</div> -->
+        
+			{% csrf_token %}
+			{{ modalform.non_field_errors }}
+			{% for field in modalform %}
+			<div class="form-group{% if field.errors %}has-error{% endif %}">
+				{{ field.label_tag }}
+			  {{ field }}
+			  
+			  {% if field.help_text %}
+			    <span class="help-block">{{ field.help_text }}</span>
+			  {% endif %}
+			  {% for error in field.errors %}
+			    <span class="help-block">{{ error }}</span>
+			  {% endfor %}
+			 <!--  <span class="glyphicon glyphicon-user form-control-feedback"></span> -->
+			</div>
+			{% endfor %}
+	      	<!-- <div class="row">
+				<div class="col-xs-12">
+				  <button type="submit" class="btn btn-primary btn-block btn-flat">Submit</button>
+				</div>
+			</div> -->
+	    
+      </div>
+      <div class="modal-footer" id="kaki">
+      	<button type="button" class="btn btn-danger btn-flat" data-dismiss="modal">Close</button>
+      	<button type="submit" class="btn btn-success btn-flat">Save</button>
+        
+      </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
+{% block foot %}
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
+
+
+
+<script type="text/javascript">
+	function myFunc() {
+		$.ajax({
+			method: "POST",
+			url: "{% url 'ajax_refreshresult'%}",
+			data: { 
+				keywords: $('#kw').text(),
+				csrfmiddlewaretoken: '{{ csrf_token }}',
+			},
+			dataType: 'json',
+			beforeSend: function(xhr) {
+		    	console.log(xhr);
+		    	$('#result').show();
+		    	$('#pace').show();
+		    	$('#resultbox').html('');
+
+		   	},
+		  	success: function(d) {
+		    	// alert(d)
+		    	console.log(d);
+		    	for (var i = 0; i < d.length; i++) {
+		    		// <button type="button" class="btn btn-info btn-lg myModal" data-toggle="modal" data-target="#myModal" data-book-id="my_id_value">Open Modal</button>
+		            var moddiv= '<div class="col-lg-2 col-md-3 col-xs-4 gallery_product" style="height:300px;">'
+			          +'<a class="d-block mb-4 h-100" type="button" '+
+			          ((!d[i].is_exist)?'data-toggle="modal"':'')+' data-target="#myModal" '
+			          +'data-img="'+d[i].path+'" '
+			          +'data-image_source="'+d[i].image_source+'" '
+			          +'data-image_link="'+d[i].image_link+'"'
+			          // +'data-color_1="'+d[i].colors[0]+'"'
+			          // +'data-color_2="'+d[i].colors[1]+'"'
+			          // +'data-color_3="'+d[i].colors[2]+'"'
+			          // +'data-color_4="'+d[i].colors[3]+'"'
+			          // +'data-color_5="'+d[i].colors[4]+'"'
+			          // +'data-color_6="'+d[i].colors[5]+'"'
+			          +'data-uploader="'+d[i].uploader+'"'
+			          +'data-tags="'+d[i].tags+'"'
+			          +'>'
+			          +'<img class="img-fluid img-thumbnail" src="'+d[i].image_thumbnail_url+'" alt="" style="width:100%; '+((d[i].is_exist)?'background-color: #b32020;':'')+'">'
+			          +'</a>'
+			          +'<div class="caption">'
+					        +'<span class="label label-success">'+d[i].image_filename+'</span> '
+					        +'<span class="label label-warning">'+d[i].image_description+'</span> '
+					        +'<span class="label label-danger">'+d[i].image_host+'</span> '
+					        +'<span class="label label-primary">'+d[i].image_width+'x'+d[i].image_height+'</span>'
+					    +'</div>'
+					+'</div>';
+			        $("#resultbox").append(moddiv)
+			    }
+		   	},
+		   	error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+            complete: function () {
+                console.log('done');
+                $('#pace').hide();
+            },
+		});
+	}
+
+	$("#test").click(function() {
+	  myFunc();
+	});
+
+	$("#grabform").submit(function(e) {
+		e.preventDefault();
+		// alert('asdasd')
+		$.ajax({
+			type: "POST",
+		  	url: "{% url 'ajax_grab'%}",
+		  	data: $(this).serialize(),
+		  	dataType: 'json',
+		  	beforeSend: function(xhr) {
+		    	console.log(xhr);
+		    	$('#result').show();
+		    	$('#pace').show();
+		    	$('#resultbox').html('');
+		    	$('#kw').html($('input[name="keywords"]').val());
+		    	$("#sucker *").attr("disabled", "disabled").off('click');
+		   	},
+		  	success: function(d) {
+		    	// alert(d)
+		    	console.log(d);
+		    	myFunc();
+		   	},
+		   	error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+            complete: function () {
+                console.log('done');
+                $('#pace').hide();
+                $("#sucker *").removeAttr("disabled").on('click');
+            },
+		})
+	});
+
+	$("#submitwallpaperform").submit(function(e) {
+		e.preventDefault();
+		// alert('asdasd')
+		$.ajax({
+			type: "POST",
+		  	url: "{% url 'ajax_submitwallpaper'%}",
+		  	data: $(this).serialize(),
+		  	dataType: 'json',
+		  	beforeSend: function(xhr) {
+		    	console.log(xhr);
+		    	$('#pace2').show();
+		    	$("#kaki *").attr("disabled", "disabled").off('click');
+
+		   	},
+		  	success: function(d) {
+		    	// alert(d)
+		    	console.log(d);
+		    	myFunc();
+		    	$('#myModal').modal('hide');
+		   	},
+		   	error: function (data) {
+                console.log('An error occurred.');
+                console.log(data);
+            },
+            complete: function () {
+                console.log('done');
+                $('#pace2').hide();
+                $("#kaki *").removeAttr("disabled").on('click');
+            },
+		})
+	});
+
+	$('#myModal').on('show.bs.modal', function(e) {
+
+	    //get data-id attribute of the clicked element
+	    // var bookId = $(e.relatedTarget).data('book-id');
+	    var dataimg = $(e.relatedTarget).data('img');
+	    var image_source = $(e.relatedTarget).data('image_source');
+	    var image_link = $(e.relatedTarget).data('image_link');
+	    // var col1 = $(e.relatedTarget).data('color_1');
+	    // var col2 = $(e.relatedTarget).data('color_2');
+	    // var col3 = $(e.relatedTarget).data('color_3');
+	    // var col4 = $(e.relatedTarget).data('color_4');
+	    // var col5 = $(e.relatedTarget).data('color_5');
+	    // var col6 = $(e.relatedTarget).data('color_6');
+	    var uploader = $(e.relatedTarget).data('uploader');
+	    var tags = $(e.relatedTarget).data('tags');
+	    // alert(col1+col2+col3+col4+col5+col6)
+	    $(e.currentTarget).find('#displayimg').attr("src", dataimg)
+	    $(e.currentTarget).find('input[name="source"]').val(image_source);
+	    $(e.currentTarget).find('input[name="link"]').val(image_link);
+	    $(e.currentTarget).find('input[name="link"]').val(image_link);
+	    // $(e.currentTarget).find('input[name="colors"]').val(col1+';'+col2+';'+col3+';'+col4+';'+col5+';'+col6);
+	    $(e.currentTarget).find('select[name="uploader"]').val(uploader);
+	    // $(e.currentTarget).find('input[name="tags"]').val(tags);
+	    $('input[name="tags"]').tagsinput('removeAll');
+	    $('input[name="tags"]').tagsinput('add', tags);
+	    $(e.currentTarget).find('input[name="keywords"]').val(tags);
+	    // $(e.currentTarget).find('#col1').css("background-color", col1);
+	    // $(e.currentTarget).find('#col2').css("background-color", col2);
+	    // $(e.currentTarget).find('#col3').css("background-color", col3);
+	    // $(e.currentTarget).find('#col4').css("background-color", col4);
+	    // $(e.currentTarget).find('#col5').css("background-color", col5);
+	    // $(e.currentTarget).find('#col6').css("background-color", col6);
+
+	    // $(e.currentTarget).find('#col1').html(col1)
+	    // $(e.currentTarget).find('#col2').html(col2)
+	    // $(e.currentTarget).find('#col3').html(col3)
+	    // $(e.currentTarget).find('#col4').html(col4)
+	    // $(e.currentTarget).find('#col5').html(col5)
+	    // $(e.currentTarget).find('#col6').html(col6)
+
+
+	    // displayimg
+	    citynames.initialize();
+	    //populate the textbox
+	    // $(e.currentTarget).find('input[name="bookId"]').val(bookId);
+	});
+
+
+	var citynames  = new Bloodhound({
+	  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+	  queryTokenizer: Bloodhound.tokenizers.whitespace,
+	  prefetch: {
+	    url: "{% url 'json_tags'%}",
+	    filter: function(list) {
+	      return $.map(list, function(cityname) {
+	        return { name: cityname }; });
+	    }
+	  }
+	});
+	citynames.initialize();
+
+	$('input[name="tags"]').tagsinput({
+	  typeaheadjs: {
+	    name: 'citynames',
+	    displayKey: 'name',
+	    valueKey: 'name',
+	    source: citynames.ttAdapter()
+	  }
+	});
+	$('.bootstrap-tagsinput').addClass('form-control');
+	$('.bootstrap-tagsinput').css("border-radius", '0px');
+</script>
+{% endblock %}
