@@ -277,8 +277,8 @@ def ajax_grabhost_wallpaperscraft0com_single(request):
 				wp = Wallpaper(link=link, source='https://wallpaperscraft.com'+source, owner=owner, owner_license=owner_license, owner_link=owner_link, category=cat, grab_host='wallpaperscraft.com', uploader= User.objects.order_by('?').first(), status=0, height=he, width=wi)
 				wp.save()
 
-				old_path= 'media/test/'+filename
-				new_path= 'media/wallpaper/'+str(wp.id_wallpaper)+'.'+ext
+				old_path= settings.BASE_DIR+'/media/test/'+filename
+				new_path= settings.BASE_DIR+'/media/wallpaper/'+str(wp.id_wallpaper)+'.'+ext
 				shutil.move(old_path, new_path)
 				loc= new_path.replace('media/', '')
 				wp.wallpaper=loc
