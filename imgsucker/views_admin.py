@@ -261,7 +261,7 @@ def ajax_grabhost_wallpaperscraft0com_single(request):
 			ext = filename.split('.')[-1]
 			urllib.request.urlretrieve(link, settings.BASE_DIR+'/media/test/'+filename)
 
-			my_file = Path('media/test/'+filename)
+			my_file = Path(settings.BASE_DIR+'/media/test/'+filename)
 			if my_file.is_file():
 				cats = Category.objects.filter(category=category)
 				if not cats:
