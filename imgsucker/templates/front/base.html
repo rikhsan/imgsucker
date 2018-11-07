@@ -138,11 +138,9 @@
 	    {% block foot %}{% endblock %}
 
 	    <script type="text/javascript">
-	    	{% if messages %}
+	    	{% if messages and not user.is_authenticated%}
 				 $('#modallogin').modal('show');
 			{% endif %}
-
-			btnlogin
 
 			{% if not user.is_authenticated %}
 				$( "#btnlogin" ).click(function() {

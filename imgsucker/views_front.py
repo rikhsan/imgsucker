@@ -117,6 +117,7 @@ def needloginclient(request):
 			if  user:
 				login(request, user)
 			else:
+				args['showlogin']=1
 				messages.error(request, 'Username and password do not match.')
 			return HttpResponseRedirect(next_page)
 	return HttpResponse(template.render(args, request))
