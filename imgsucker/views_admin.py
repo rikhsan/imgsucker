@@ -13,6 +13,7 @@ from imgsucker.decorators import required_admin
 from django.http import JsonResponse
 from imgsucker.models import Tag, Wallpaper_tag, Wallpaper, Resolution, Wallpaper_resoultion, Word, User, Category
 from urllib.parse import urlparse
+from imgsucker import settings
 
 def suckimage(request):
     return HttpResponse('<h1>Page was found</h1>')
@@ -258,7 +259,8 @@ def ajax_grabhost_wallpaperscraft0com_single(request):
 
 			filename = link[link.rfind("/")+1:]
 			ext = filename.split('.')[-1]
-			urllib.request.urlretrieve(link, 'media/test/'+filename)
+			urllib.request.urlretrieve(link, settings.BASE_DIR+'/media/test/'+filename)
+
 			my_file = Path('media/test/'+filename)
 			if my_file.is_file():
 				cats = Category.objects.filter(category=category)
@@ -324,7 +326,7 @@ import json
 import shutil
 import os
 
-from imgsucker import settings
+
 from google_images_download import google_images_download
 from colorthief import ColorThief
 

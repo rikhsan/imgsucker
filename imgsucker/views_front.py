@@ -15,6 +15,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from imgsucker import settings
 
 def home(request):
 	template = loader.get_template('front/v_home.html')
