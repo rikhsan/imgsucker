@@ -280,7 +280,7 @@ def ajax_grabhost_wallpaperscraft0com_single(request):
 				old_path= settings.BASE_DIR+'/media/test/'+filename
 				new_path= settings.BASE_DIR+'/media/wallpaper/'+str(wp.id_wallpaper)+'.'+ext
 				shutil.move(old_path, new_path)
-				loc= new_path.replace('media/', '')
+				loc= new_path.replace(settings.BASE_DIR+'/media/', '')
 				wp.wallpaper=loc
 
 				color_thief = ColorThief(new_path)
