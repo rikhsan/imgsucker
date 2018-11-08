@@ -14,6 +14,7 @@ from django.http import JsonResponse
 from imgsucker.models import Tag, Wallpaper_tag, Wallpaper, Resolution, Wallpaper_resoultion, Word, User, Category
 from urllib.parse import urlparse
 from imgsucker import settings
+from datetime import timedelta
 from django.utils import timezone
 
 def suckimage(request):
