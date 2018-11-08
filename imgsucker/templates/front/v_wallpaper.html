@@ -183,7 +183,7 @@
 									<div class="col-sm-6">
 										<div class="row mb-3">
 											<div class="col"><button id="btnfavorite" type="button" class="btn {% if is_favorited %}btn-warning{% else %}btn-secondary{% endif %} btn-block"><i class="fas fa-star"></i> {% if is_favorited %}Favorited{% else %}Favorite{% endif %}</button></div>
-											<div class="col"><button id="brnshare" type="button" class="btn btn-primary btn-block" data-placement="bottom" data-toggle="popover" data-container="body" data-placement="left" data-html="true"><i class="fas fa-share"></i> Share<br></button></div>
+											<!-- <div class="col"><button id="brnshare" type="button" class="btn btn-primary btn-block" data-placement="bottom" data-toggle="popover" data-container="body" data-placement="left" data-html="true"><i class="fas fa-share"></i> Share<br></button></div> -->
 										</div>
 									</div>
 								</div>
@@ -348,7 +348,7 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row mt-3">
 	<div class="col">
 		<center>
 			{% for ta in tags %}
@@ -365,7 +365,7 @@
 
 
 {% block foot %}
-<div id="popover-content" class="hide">
+<!-- <div id="popover-content" class="hide">
 	<center>
 		<a href="" class="btn btn-primary rounded-circle mb-2"><i class="fab fa-facebook"></i></a>
 		<a href="" class="btn btn-info rounded-circle mb-2"><i class="fab fa-twitter"></i></a>
@@ -375,7 +375,7 @@
 		<a href="" class="btn btn-success rounded-circle mb-2"><i class="fas fa-link"></i></a>
 	</center>
 	
-</div>
+</div> -->
 <script type="text/javascript">
 	$("[data-toggle=popover]").popover({
 		html: true, 

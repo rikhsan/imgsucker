@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.humanize.templatetags.humanize import naturalday, naturaltime
 from django.utils import timezone
-from datetime import datetime, timedelta
+import datetime
 from django.contrib.auth.models import AbstractUser
 from sorl.thumbnail import ImageField
 
@@ -105,11 +105,12 @@ class Wallpaper(models.Model):
 		return 'asdasdasd'
 
 	def timehuman(self):
-		result= self.created_at
-		if (timezone.now()-self.created_at).days==0:
-			result = naturaltime(self.created_at)
-		elif (timezone.now()-self.created_at).days==1:
-			result = naturalday(self.created_at)
+		result= self.post_at
+		# result = naturaltime(self.post_at)
+		# if (datetime.datetime.now()-self.post_at).days==0:
+		# 	result = naturaltime(self.post_at)
+		# elif (datetime.datetime.now()-self.post_at).days==1:
+		# 	result = naturalday(self.post_at)
 		return result
 
 	# def thumbnailsize(self, w, h):

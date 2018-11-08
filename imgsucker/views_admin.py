@@ -14,6 +14,8 @@ from django.http import JsonResponse
 from imgsucker.models import Tag, Wallpaper_tag, Wallpaper, Resolution, Wallpaper_resoultion, Word, User, Category
 from urllib.parse import urlparse
 from imgsucker import settings
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 def suckimage(request):
     return HttpResponse('<h1>Page was found</h1>')
@@ -211,6 +213,7 @@ from bs4 import BeautifulSoup
 import urllib.request
 import urllib.request
 from pathlib import Path
+import random
 def ajax_grabhost_wallpaperscraft0com_single(request):
 	response_data = {}
 	if request.method == 'POST':
@@ -301,6 +304,13 @@ def ajax_grabhost_wallpaperscraft0com_single(request):
 					wallpaper_tag = Wallpaper_tag(tag=tag, wallpaper=wp)
 					wallpaper_tag.save()
 				wp.status=1
+				last_walls = Wallpaper.objects.exclude(post_at__isnull=True).order_by('-post_at')
+				if last_walls:
+					lw = last_walls[0]
+					post_time= lw.post_at+timedelta(minutes=random.randint(3,5))
+				else:
+					post_time= datetime.datetime.now()
+				wp.post_at=post_time
 				wp.save()
 				print('saved')
 			# for lic in soupz.findAll("div", attrs={'class':'author__row'}):
