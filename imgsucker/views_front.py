@@ -276,7 +276,7 @@ def image(request, title, id_wall, w, h):
 		else:
 			filename =  str(w)+'x'+ str(h)+'_'+ str(id_wall)+'.jpg'
 
-		img_path= 'media/wallpaper/'+filename
+		img_path= settings.BASE_DIR+'/media/wallpaper/'+filename
 		if not os.path.isfile(img_path):
 			img = Image.open(settings.BASE_DIR+'/media/'+str(wallpaper.wallpaper))
 			print('not available')
@@ -292,7 +292,7 @@ def image(request, title, id_wall, w, h):
 			proc_img = img.resize((resi_w, resi_h), Image.ANTIALIAS)
 			crop_x= int((resi_w-res.w)/2)
 			crop_y= int((resi_h-res.h)/2)
-			proc_img.crop((crop_x, crop_y, crop_x+res.w, crop_y+res.h)).save('media/wallpaper/'+str(res.w)+'x'+str(res.h)+'_'+str(wallpaper.id_wallpaper)+'.jpg')
+			proc_img.crop((crop_x, crop_y, crop_x+res.w, crop_y+res.h)).save(settings.BASE_DIR+'/media/wallpaper/'+str(res.w)+'x'+str(res.h)+'_'+str(wallpaper.id_wallpaper)+'.jpg')
 
 	else:
 		img_path = wallpaper.wallpaper.path
