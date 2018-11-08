@@ -237,13 +237,13 @@ def tag(request, tag, sort='date', page='1'):
 	tag_reco = Tag.objects.get(tag=tag.replace('-',' '))
 	# print(sort)
 	if sort == 'date':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(post_at__lte=datetime.datetime.now()).order_by('-wallpaper__post_at')
+		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('-wallpaper__post_at')
 	elif sort == 'likes':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(post_at__lte=datetime.datetime.now()).order_by('-wallpaper__likes')
+		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('-wallpaper__likes')
 	elif sort == 'downloads':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(post_at__lte=datetime.datetime.now()).order_by('-wallpaper__downloads')
+		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('-wallpaper__downloads')
 	elif sort == 'views':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(post_at__lte=datetime.datetime.now()).order_by('-wallpaper__views')
+		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('-wallpaper__views')
 	else:
 		raise Http404
 	# print(walls)
@@ -446,13 +446,22 @@ def getrelatedwallpaper(wall, limit, w, h):
 	else:
 		related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('?').values('wallpaper').distinct()[:limit]
 	ar_rw=[]
+	ar_rw_ids=[]
+	ar_rw_ids.append(wall.id_wallpaper)
 	for rw in related:
+		ar_rw_ids.append(rw['wallpaper'])
 		ar_rw.append(rw['wallpaper'])
 
-	while len(ar_rw) < limit:
-		additional_wall = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now()).order_by('?').first()
-		if additional_wall.id_wallpaper not in ar_rw:
-			ar_rw.append(additional_wall.id_wallpaper)
+	if len(ar_rw) < limit:
+		additional = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now()).exclude(id_wallpaper_in = ar_rw_ids).order_by('?')[:limit]
+		for addi in additional:
+			ar_rw.append(addi.id_wallpaper)
+
+	# fore
+	# while len(ar_rw) < limit:
+	# 	additional_wall = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now()).order_by('?').first()
+	# 	if additional_wall.id_wallpaper not in ar_rw:
+	# 		ar_rw.append(additional_wall.id_wallpaper)
 
 	related_walls= Wallpaper.objects.filter(id_wallpaper__in= ar_rw).filter(post_at__lte=datetime.datetime.now())
 	# for rel in related:
