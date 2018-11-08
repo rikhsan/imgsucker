@@ -278,7 +278,7 @@ def image(request, title, id_wall, w, h):
 
 		img_path= 'media/wallpaper/'+filename
 		if not os.path.isfile(img_path):
-			img = Image.open('media/'+str(wallpaper.wallpaper))
+			img = Image.open(settings.BASE_DIR+'/media/'+str(wallpaper.wallpaper))
 			print('not available')
 			resi_w= res.w
 			resi_w_proc= res.w/img.width
