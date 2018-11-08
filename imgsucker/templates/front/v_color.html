@@ -3,10 +3,27 @@
 {% load thumbnail %}
 
 {% block page %}
-	Free HD Wallpapers, Backgrounds, Images with color #{{ color }}
+	Free HD Wallpapers, Backgrounds, Images in #{{ color }} color code
 {% endblock %}
 
 {% block head %}
+{% endblock %}
+
+{% block meta %}
+<meta content="" name="author">
+<meta content="Simmiliar wallpapers in #{{ color }} color code" name="description">
+<meta content="" name="keywords">
+<meta content="telephone=no" name="format-detection">
+<meta name="robots" content="noodp, noydir">
+
+<meta name="HandheldFriendly" content="true">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+
+<meta property="og:title" content="Free HD Wallpapers, Backgrounds, Images in color #{{ color }} code" />
+<meta property="og:url" content="{{ request.get_full_path }}" />
+<meta property="og:description" content="Simmiliar wallpapers in #{{ color }} color code" />
+<meta property="twitter:description" content="Simmiliar wallpapers in #{{ color }} color code" />
 {% endblock %}
 
 {% block content %}

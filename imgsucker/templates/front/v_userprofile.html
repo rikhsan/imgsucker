@@ -3,10 +3,27 @@
 {% load thumbnail %}
 
 {% block page %}
-	User 
+	Wallpaper Collections of {{ user2.username }} | MostWantedWallpapers.com
 {% endblock %}
 
 {% block head %}
+{% endblock %}
+
+{% block meta %}
+<meta content="" name="author">
+<meta content="HD awesome wallpaper collections by {{ user2.username }}." name="description">
+<meta content="" name="keywords">
+<meta content="telephone=no" name="format-detection">
+<meta name="robots" content="noodp, noydir">
+
+<meta name="HandheldFriendly" content="true">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+
+<meta property="og:title" content="Wallpaper Collections of {{ user2.username }} | MostWantedWallpapers.com" />
+<meta property="og:url" content="{{ request.get_full_path }}" />
+<meta property="og:description" content="HD awesome wallpaper collections by {{ user2.username }}." />
+<meta property="twitter:description" content="HD awesome wallpaper collections by {{ user2.username }}." />
 {% endblock %}
 
 {% block content %}

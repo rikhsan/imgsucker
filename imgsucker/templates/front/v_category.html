@@ -3,10 +3,27 @@
 {% load thumbnail %}
 
 {% block page %}
-	Free HD Wallpapers, Backgrounds, Images in {{ category.category }} category
+	Free HD Wallpapers, Backgrounds, Images in {{ category.category }} category | MostWantedWallpapers.com
 {% endblock %}
 
 {% block head %}
+{% endblock %}
+
+{% block meta %}
+<meta content="" name="author">
+<meta content="+999 Amazing Wallpapers in {{ category.category }} Category" name="description">
+<meta content="" name="keywords">
+<meta content="telephone=no" name="format-detection">
+<meta name="robots" content="noodp, noydir">
+
+<meta name="HandheldFriendly" content="true">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+
+<meta property="og:title" content="Free HD Wallpapers, Backgrounds, Images in {{ category.category }} category | MostWantedWallpapers.com" />
+<meta property="og:url" content="{{ request.get_full_path }}" />
+<meta property="og:description" content="+999 Amazing Wallpapers in {{ category.category }} Category" />
+<meta property="twitter:description" content="+999 Amazing Wallpapers in {{ category.category }} Category" />
 {% endblock %}
 
 {% block content %}

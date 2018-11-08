@@ -3,12 +3,12 @@
 {% load thumbnail %}
 
 {% block page %}
-	HD Wallpaper Collections, Free Download Million Background
+	+1000 {{ query }} HD Wallpapers | MostWantedWallpapers.com
 {% endblock %}
 
 {% block meta %}
 <meta content="" name="author">
-<meta content="Free best HD wallpapers for your desktop, Mac, Windows or Android devic. Find million awesome wallpaper images in any resolution." name="description">
+<meta content="Millions {{query}} HD Wallpapers" name="description">
 <meta content="" name="keywords">
 <meta content="telephone=no" name="format-detection">
 <meta name="robots" content="noodp, noydir">
@@ -17,12 +17,10 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible">
 
 
-<meta property="og:title" content="HD Wallpaper Collections, Free Download Million Background" />
-<meta property="og:url" content="https://wallpaperscraft.com/" />
-<meta property="og:description" content="Free best HD wallpapers for your desktop, Mac, Windows or Android devic. Find million awesome wallpaper images in any resolution." />
-
-<meta name="twitter:title" content="European Travel Destinations ">
-<meta property="twitter:description" content="Free best HD wallpapers for your desktop, Mac, Windows or Android devic. Find million awesome wallpaper images in any resolution.e" />
+<meta property="og:title" content="+1000 {{ query }} HD Wallpapers | MostWantedWallpapers.com" />
+<meta property="og:url" content="{{ request.get_full_path }}" />
+<meta property="og:description" content="Millions {{query}} HD Awesome Wallpapers. " />
+<meta property="twitter:description" content="Millions {{query}} HD Awesome Wallpapers. " />
 {% endblock %}
 
 {% block head %}

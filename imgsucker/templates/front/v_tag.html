@@ -9,6 +9,23 @@
 {% block head %}
 {% endblock %}
 
+{% block meta %}
+<meta content="" name="author">
+<meta content="+777 Stunning Wallpapers in {{ tag.tag }} Tag" name="description">
+<meta content="" name="keywords">
+<meta content="telephone=no" name="format-detection">
+<meta name="robots" content="noodp, noydir">
+
+<meta name="HandheldFriendly" content="true">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+
+<meta property="og:title" content="Free HD Wallpapers, Backgrounds, Images in {{ tag.tag }} tag | MostWantedWallpapers.com" />
+<meta property="og:url" content="{{ request.get_full_path }}" />
+<meta property="og:description" content="+777 Stunning Wallpapers in {{ tag.tag }} Tag" />
+<meta property="twitter:description" content="+777 Stunning Wallpapers in {{ tag.tag }} Tag" />
+{% endblock %}
+
 {% block content %}
 <div class="row">
 	<div class="col">

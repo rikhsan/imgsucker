@@ -114,7 +114,7 @@
 									<tr>
 										<th>Uploaded </th>
 										<td>
-											{{ wallpaper.timehuman }} <strong>by</strong> <a href="">{{ wallpaper.uploader.username }}</a>
+											{{ wallpaper.timehuman }} <strong>by</strong> <a href="{% url 'fr_userprofile' wallpaper.uploader.username %}">{{ wallpaper.uploader.username }}</a>
 						            	</td>
 									</tr>
 									<tr>
