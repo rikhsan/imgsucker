@@ -14,6 +14,25 @@
 {% block head %}
 {% endblock %}
 
+{% block meta %}
+<meta content="" name="author">
+<meta content="Download Wallpaper {{ w }}x{{ h }} {% for ta in wallpaper.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} hd for pc or mac, laptop, tablet, mobile phone" name="description">
+<meta content="" name="keywords">
+<meta content="telephone=no" name="format-detection">
+<meta name="robots" content="noodp, noydir">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="HandheldFriendly" content="true">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+
+<meta property="og:title" content="Download Wallpaper {{ w }}x{{ h }} {% for ta in wallpaper.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} {% if is_original %}original size{% else %}{{ resolution.resolution }}{% endif %} hd background" />
+<meta property="og:url" content="{{ request.get_full_path }}" />
+<meta property="og:description" content="Download Wallpaper {{ w }}x{{ h }} {% for ta in wallpaper.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} {% if is_original %}original size{% else %}{{ resolution.resolution }}{% endif %} for pc or mac, laptop, tablet, mobile phone" />
+<meta property="twitter:description" content="Download Wallpaper {{ w }}x{{ h }} {% for ta in wallpaper.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} {% if is_original %}original size{% else %}{{ resolution.resolution }}{% endif %} for pc or mac, laptop, tablet, mobile phone" />
+
+{% endblock %}
+
 {% block content %}
 <div class="row">
 	<div class="col-md-2">
@@ -46,6 +65,8 @@
 					        {{ w }}x{{ h }}
 					  		</h1>
 						{% endif %}
+
+						
 					</div>
 				</div>
 			</div>
@@ -142,31 +163,34 @@
 				</div>
 		    </div>
 		</div>
-		<div class="row mt-3">
-			<div class="col">
-				<h2>Related Wallpaper</h2>
-			</div>
-		</div>
-		<div class="row mt-3">
-			{% for wall in relatedwalls %}
-			    <div class="col-sm-4 mb-4">
-			    	<div class="card  ">
-			    		{% thumbnail wall.wallpaper wh_thumb crop="center" as im %}
-			    			<a href="{% url 'fr_download' wall.tagtotitleslugify wall.id_wallpaper w h%}"><img class="card-img-top" src="{{ im.url }}"></a>
-			    		{% endthumbnail %}
-			    		<div class="card-body text-center">
-							<p class="card-text">{{ w }}x{{ h }}
-								<br>
-							{% for ta in wall.tagsplit %}
-								<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
-			                {% endfor %}
-							</p>
-			    		</div>
-
-			    	</div>
+		{% if relatedwalls %}
+			<div class="row mt-3">
+				<div class="col">
+					<h2>Related Wallpaper</h2>
 				</div>
-			{% endfor %}
-		</div>
+			</div>
+			<div class="row mt-3">
+				{% for wall in relatedwalls %}
+				    <div class="col-sm-4 mb-4">
+				    	<div class="card  ">
+				    		{% thumbnail wall.wallpaper wh_thumb crop="center" as im %}
+				    			<a href="{% url 'fr_download' wall.tagtotitleslugify wall.id_wallpaper w h%}"><img class="card-img-top" src="{{ im.url }}"></a>
+				    		{% endthumbnail %}
+				    		<div class="card-body text-center">
+								<p class="card-text">{{ w }}x{{ h }}
+									<br>
+								{% for ta in wall.tagsplit %}
+									<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
+				                {% endfor %}
+								</p>
+				    		</div>
+
+				    	</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+		
 
 	</div>
 </div>

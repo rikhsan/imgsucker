@@ -12,6 +12,26 @@
     {% endfor %}
 {% endblock %}
 
+{% block meta %}
+<meta content="" name="author">
+<meta content="Wallpaper {% for ta in wallpaper.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} hd for pc or mac, laptop, tablet, mobile phone" name="description">
+<meta content="" name="keywords">
+<meta content="telephone=no" name="format-detection">
+<meta name="robots" content="noodp, noydir">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="HandheldFriendly" content="true">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+
+
+<meta property="og:title" content="Wallpaper {% for ta in wallpaper.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} image background wallpaper" />
+<meta property="og:url" content="{{ request.get_full_path }}" />
+<meta property="og:description" content="Desktop wallpaper {% for ta in wallpaper.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} hd for pc or mac, laptop, tablet, mobile phone" />
+<meta property="twitter:description" content="Desktop wallpaper {% for ta in wallpaper.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} hd for pc or mac, laptop, tablet, mobile phone" />
+
+{% endblock %}
+
+
 {% block head %}
 <style type="text/css">
 .container {padding:20px;}
@@ -118,7 +138,7 @@
 									<tr>
 										<td></td>
 										<td>
-											 {{ wallpaper.views }} <strong>views</strong>, {{ wallpaper.views }} <strong>favorited</strong> and {{ wallpaper.downloads }} <strong>downloads</strong>
+											 {{ wallpaper.views }} <strong>views</strong>, {{ wallpaper.favorites }} <strong>favorited</strong> and {{ wallpaper.downloads }} <strong>downloads</strong>
 						            	</td>
 
 									</tr>

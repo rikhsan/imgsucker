@@ -266,34 +266,36 @@ def image(request, title, id_wall, w, h):
 	wallpaper.downloads+=1
 	wallpaper.save()
 	resss = Resolution.objects.filter(w=w, h=h)
-	if not resss:
-		raise Http404
 
-	res = resss.first()
+	if resss:
+		# raise Http404
+		res = resss.first()
 
-	if (wallpaper.wallpaper.width is w) and (wallpaper.wallpaper.height is h):
-		filename = str(id_wall)+'.jpg'
+		if (wallpaper.wallpaper.width is w) and (wallpaper.wallpaper.height is h):
+			filename = str(id_wall)+'.jpg'
+		else:
+			filename =  str(w)+'x'+ str(h)+'_'+ str(id_wall)+'.jpg'
+
+		img_path= 'media/wallpaper/'+filename
+		if not os.path.isfile(img_path):
+			img = Image.open('media/'+str(wallpaper.wallpaper))
+			print('not available')
+			resi_w= res.w
+			resi_w_proc= res.w/img.width
+			resi_h= int(img.height*resi_w_proc)
+			if resi_w<res.w or resi_h<res.h:
+				resi_h=res.h
+				resi_h_proc= res.h/img.height
+				resi_w= int(img.width*resi_h_proc)
+			print(str(res.w)+'x'+str(res.h))
+			print(str(img.width)+'x'+str(img.height)+'('+str(img.width/img.height)+')'+' => '+str(resi_w)+'x'+str(resi_h)+'('+str(resi_w/resi_h)+')')
+			proc_img = img.resize((resi_w, resi_h), Image.ANTIALIAS)
+			crop_x= int((resi_w-res.w)/2)
+			crop_y= int((resi_h-res.h)/2)
+			proc_img.crop((crop_x, crop_y, crop_x+res.w, crop_y+res.h)).save('media/wallpaper/'+str(res.w)+'x'+str(res.h)+'_'+str(wallpaper.id_wallpaper)+'.jpg')
+
 	else:
-		filename =  str(w)+'x'+ str(h)+'_'+ str(id_wall)+'.jpg'
-
-
-	img_path= 'media/wallpaper/'+filename
-	if not os.path.isfile(img_path):
-		img = Image.open('media/'+str(wallpaper.wallpaper))
-		print('not available')
-		resi_w= res.w
-		resi_w_proc= res.w/img.width
-		resi_h= int(img.height*resi_w_proc)
-		if resi_w<res.w or resi_h<res.h:
-			resi_h=res.h
-			resi_h_proc= res.h/img.height
-			resi_w= int(img.width*resi_h_proc)
-		print(str(res.w)+'x'+str(res.h))
-		print(str(img.width)+'x'+str(img.height)+'('+str(img.width/img.height)+')'+' => '+str(resi_w)+'x'+str(resi_h)+'('+str(resi_w/resi_h)+')')
-		proc_img = img.resize((resi_w, resi_h), Image.ANTIALIAS)
-		crop_x= int((resi_w-res.w)/2)
-		crop_y= int((resi_h-res.h)/2)
-		proc_img.crop((crop_x, crop_y, crop_x+res.w, crop_y+res.h)).save('media/wallpaper/'+str(res.w)+'x'+str(res.h)+'_'+str(wallpaper.id_wallpaper)+'.jpg')
+		img_path = wallpaper.wallpaper.path
 
 	# print(img_path)
 	img = open(img_path, mode='rb').read()
