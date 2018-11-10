@@ -21,7 +21,7 @@ import datetime
 
 def home(request):
 	template = loader.get_template('front/v_home.html')
-	walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now()).order_by('-post_at')
+	walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-post_at')
 	paginator = Paginator(walls, 16)
 	form = LoginClientForm()
 	context = {
@@ -163,16 +163,16 @@ def search(request):
 		tags = Tag.objects.filter(tag__contains=query)
 
 		# cari full category & tag
-		queryresult |= Wallpaper.objects.filter(category__in= categories).filter(post_at__lte=datetime.datetime.now())
+		queryresult |= Wallpaper.objects.filter(category__in= categories).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
 		
 
-		wall_tags= Wallpaper_tag.objects.filter(tag__in = tags).filter(post_at__lte=datetime.datetime.now())
+		wall_tags= Wallpaper_tag.objects.filter(tag__in = tags).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
 
 		wts=[]
 		for wt in wall_tags:
 			wts.append(wt.wallpaper.id_wallpaper)
 
-		queryresult |= Wallpaper.objects.filter(id_wallpaper__in= wts).filter(post_at__lte=datetime.datetime.now())
+		queryresult |= Wallpaper.objects.filter(id_wallpaper__in= wts).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
 
 
 		# queryresult |= Wallpaper.objects.filter(wallpaper__in= categories)
@@ -185,11 +185,11 @@ def search(request):
 			queryresult |= Wallpaper.objects.filter(category__in= categories_split)
 
 			wts2=[]
-			wall_tags2= Wallpaper_tag.objects.filter(tag__in = tags_split).filter(post_at__lte=datetime.datetime.now())
+			wall_tags2= Wallpaper_tag.objects.filter(tag__in = tags_split).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
 			for wt2 in wall_tags2:
 				wts2.append(wt2.wallpaper.id_wallpaper)
 
-			queryresult |= Wallpaper.objects.filter(id_wallpaper__in= wts2).filter(post_at__lte=datetime.datetime.now())
+			queryresult |= Wallpaper.objects.filter(id_wallpaper__in= wts2).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
 
 
 		# queryresult= sorted(list(set(queryresult)), key=operator.attrgetter('created_at'))
@@ -211,13 +211,13 @@ def search(request):
 def all(request, sort, page):
 	template = loader.get_template('front/v_home.html')
 	if sort == 'date':
-		walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now()).order_by('-post_at')
+		walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-post_at')
 	elif sort == 'likes':
-		walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now()).order_by('-likes')
+		walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-likes')
 	elif sort == 'downloads':
-		walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now()).order_by('-downloads')
+		walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-downloads')
 	elif sort == 'views':
-		walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now()).order_by('-views')
+		walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-views')
 	else:
 		raise Http404
 
@@ -237,13 +237,13 @@ def tag(request, tag, sort='date', page='1'):
 	tag_reco = Tag.objects.get(tag=tag.replace('-',' '))
 	# print(sort)
 	if sort == 'date':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('-wallpaper__post_at')
+		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__post_at')
 	elif sort == 'likes':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('-wallpaper__likes')
+		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__likes')
 	elif sort == 'downloads':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('-wallpaper__downloads')
+		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__downloads')
 	elif sort == 'views':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('-wallpaper__views')
+		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__views')
 	else:
 		raise Http404
 	# print(walls)
@@ -309,13 +309,13 @@ def category(request, category, sort='date', page='1'):
 	category_reco = Category.objects.get(category=category.replace('-',' '))
 	# print(sort)
 	if sort == 'date':
-		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now()).order_by('-post_at')
+		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-post_at')
 	elif sort == 'likes':
-		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now()).order_by('-likes')
+		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-likes')
 	elif sort == 'downloads':
-		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now()).order_by('-downloads')
+		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-downloads')
 	elif sort == 'views':
-		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now()).order_by('-views')
+		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-views')
 	else:
 		raise Http404
 	# print(walls)
@@ -335,13 +335,13 @@ def color(request, color, sort='date', page='1'):
 	# category_reco = Category.objects.get(id_category=id)
 	# print(sort)
 	if sort == 'date':
-		walls = Wallpaper.objects.filter(colors__contains=color).filter(post_at__lte=datetime.datetime.now()).order_by('-post_at')
+		walls = Wallpaper.objects.filter(colors__contains=color).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-post_at')
 	elif sort == 'likes':
-		walls = Wallpaper.objects.filter(colors__contains=color).filter(post_at__lte=datetime.datetime.now()).order_by('-likes')
+		walls = Wallpaper.objects.filter(colors__contains=color).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-likes')
 	elif sort == 'downloads':
-		walls = Wallpaper.objects.filter(color__contains=color).filter(post_at__lte=datetime.datetime.now()).order_by('-downloads')
+		walls = Wallpaper.objects.filter(color__contains=color).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-downloads')
 	elif sort == 'views':
-		walls = Wallpaper.objects.filter(colors__contains=color).filter(post_at__lte=datetime.datetime.now()).order_by('-views')
+		walls = Wallpaper.objects.filter(colors__contains=color).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-views')
 	else:
 		raise Http404
 	# print(walls)
@@ -442,9 +442,9 @@ def getrelatedwallpaper(wall, limit, w, h):
 
 	if w and h:
 		print(h)
-		related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags, wallpaper__height__gte=h, wallpaper__width__gte=w).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('?').values('wallpaper').distinct()[:limit]
+		related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags, wallpaper__height__gte=h, wallpaper__width__gte=w).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()[:limit]
 	else:
-		related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('?').values('wallpaper').distinct()[:limit]
+		related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()[:limit]
 	ar_rw=[]
 	ar_rw_ids=[]
 	ar_rw_ids.append(wall.id_wallpaper)
@@ -453,17 +453,17 @@ def getrelatedwallpaper(wall, limit, w, h):
 		ar_rw.append(rw['wallpaper'])
 
 	if len(ar_rw) < limit:
-		additional = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now()).exclude(id_wallpaper_in = ar_rw_ids).order_by('?')[:limit]
+		additional = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).exclude(id_wallpaper_in = ar_rw_ids).order_by('?')[:limit]
 		for addi in additional:
 			ar_rw.append(addi.id_wallpaper)
 
 	# fore
 	# while len(ar_rw) < limit:
-	# 	additional_wall = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now()).order_by('?').first()
+	# 	additional_wall = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').first()
 	# 	if additional_wall.id_wallpaper not in ar_rw:
 	# 		ar_rw.append(additional_wall.id_wallpaper)
 
-	related_walls= Wallpaper.objects.filter(id_wallpaper__in= ar_rw).filter(post_at__lte=datetime.datetime.now())
+	related_walls= Wallpaper.objects.filter(id_wallpaper__in= ar_rw).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
 	# for rel in related:
 	# 	related_walls.append(rel.wallpaper)
 	return related_walls
@@ -476,7 +476,7 @@ def getrelatedtags(wall, limit):
 	for wt in wall_tags:
 		tags.append(wt.tag)
 
-	related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags).filter(wallpaper__post_at__lte=datetime.datetime.now()).order_by('?').values('tag').distinct()[:limit]
+	related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('tag').distinct()[:limit]
 	ar_tg=[]
 	for tg in related:
 		ar_tg.append(tg['tag'])

@@ -309,7 +309,7 @@ def ajax_grabhost_wallpaperscraft0com_single(request):
 					lw = last_walls[0]
 					post_time= lw.post_at+timedelta(minutes=random.randint(3,5))
 				else:
-					post_time= datetime.datetime.now()
+					post_time= datetime.datetime.now(tz=timezone.utc)
 				wp.post_at=post_time
 				wp.save()
 				print('saved')
