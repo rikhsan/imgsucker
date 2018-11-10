@@ -25,9 +25,9 @@ SECRET_KEY = '^^$#e_)k(25l!psig^ggf+ol_2jc(90yg%wpn=!40)=&y0t53*'
 # SECURITY WARNING: don't run with debug turned on in production!
 import sys
 DEBUG=False
-# if not len(sys.argv):
-#     if sys.argv[1] != 'runserver':
-#        DEBUG=False 
+if len(sys.argv):
+    if sys.argv[1] == 'runserver':
+       DEBUG=True 
 
 ALLOWED_HOSTS = ['localhost','178.128.110.195','is.rikhsan.com','mostwantedwallpapers.com', 'www.mostwantedwallpapers.com']
 
