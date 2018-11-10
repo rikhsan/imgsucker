@@ -3,7 +3,7 @@
 {% load thumbnail %}
 
 {% block page %}
-	Free HD Wallpapers, Backgrounds, Images in {{ tag.tag }} tag
+	{{ tag.tag }} Free wallpapers hd, desktop backgrounds, images and pictures - MostWantedWallpapers.com 
 {% endblock %}
 
 {% block head %}
@@ -11,19 +11,20 @@
 
 {% block meta %}
 <meta content="" name="author" />
-<meta name="description" content="+777 Stunning Wallpapers in {{ tag.tag }} Tag" />
+
+
+<meta name="description" content="Best {{ tag.tag }} Free wallpaper, desktop background for any computer, laptop, tablet and phone." />
 <meta content="" name="keywords">
 <meta content="telephone=no" name="format-detection" />
 <meta name="robots" content="noodp, noydir" />
-
 <meta name="HandheldFriendly" content="true" />
 <meta content="IE=edge" http-equiv="X-UA-Compatible" />
 
 
-<meta property="og:title" content="Free HD Wallpapers, Backgrounds, Images in {{ tag.tag }} tag | MostWantedWallpapers.com" />
+<meta property="og:title" content="{{ tag.tag }} Free wallpapers hd, desktop backgrounds, images and pictures - MostWantedWallpapers.com " />
 <meta property="og:url" content="{{ request.get_full_path }}" />
-<meta property="og:description" content="+777 Stunning Wallpapers in {{ tag.tag }} Tag" />
-<meta property="twitter:description" content="+777 Stunning Wallpapers in {{ tag.tag }} Tag" />
+<meta property="og:description" content="Best {{ tag.tag }} Free wallpaper, desktop background for any computer, laptop, tablet and phone." />
+<meta property="twitter:description" content="Best {{ tag.tag }} Free wallpaper, desktop background for any computer, laptop, tablet and phone." />
 {% endblock %}
 
 {% block content %}
