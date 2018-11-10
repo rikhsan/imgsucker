@@ -29,7 +29,7 @@ if not len(sys.argv):
     if sys.argv[1] != 'runserver':
        DEBUG=False 
 
-ALLOWED_HOSTS = ['localhost','178.128.110.195','is.rikhsan.com','mostwantedwallpaper.com']
+ALLOWED_HOSTS = ['localhost','178.128.110.195','is.rikhsan.com','mostwantedwallpapers.com', 'www.mostwantedwallpapers.com']
 
 
 # Application definition
