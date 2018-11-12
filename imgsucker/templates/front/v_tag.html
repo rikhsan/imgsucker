@@ -62,7 +62,7 @@
 	    <div class="col-md-3 mb-3">
 	    	<div class="card text-center">
 	    		{% thumbnail wall.wallpaper.wallpaper "400x250" crop="center" as im %}
-	    			<a href="{% url 'fr_wallpaper' wall.wallpaper.slugtags wall.wallpaper.id_wallpaper %}"><img class="card-img-top" src="{{ im.url }}"></a>
+	    			<a href="{% url 'fr_wallpaper' wall.wallpaper.slugtags wall.wallpaper.id_wallpaper %}"><img class="card-img-top" src="{{ im.url }}" alt="Wallpaper {{ wall.wallpaper.alt|title }}"></a>
 	    		{% endthumbnail %}
 	    		<div class="card-body">
 					<p class="card-text">{{ wall.wallpaper.wallpaper.width }}x{{ wall.wallpaper.wallpaper.height }}

@@ -166,7 +166,7 @@ def search(request):
 		queryresult |= Wallpaper.objects.filter(category__in= categories).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
 		
 
-		wall_tags= Wallpaper_tag.objects.filter(tag__in = tags).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
+		wall_tags= Wallpaper_tag.objects.filter(tag__in = tags).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc))
 
 		wts=[]
 		for wt in wall_tags:
@@ -185,7 +185,7 @@ def search(request):
 			queryresult |= Wallpaper.objects.filter(category__in= categories_split)
 
 			wts2=[]
-			wall_tags2= Wallpaper_tag.objects.filter(tag__in = tags_split).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
+			wall_tags2= Wallpaper_tag.objects.filter(tag__in = tags_split).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc))
 			for wt2 in wall_tags2:
 				wts2.append(wt2.wallpaper.id_wallpaper)
 

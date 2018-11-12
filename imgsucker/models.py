@@ -101,6 +101,15 @@ class Wallpaper(models.Model):
 				slugtag=slugtag+'_'
 		return slugtag
 
+	def alt(self):
+		slugtag=''
+		tagsplit=Wallpaper.tagsplit(self)
+		for i, tag in enumerate(tagsplit):
+			slugtag=slugtag+slugify(tag.tag.tag)
+			if i != (len(tagsplit) - 1):
+				slugtag=slugtag+', '
+		return slugtag
+
 	def test(self):
 		return 'asdasdasd'
 
