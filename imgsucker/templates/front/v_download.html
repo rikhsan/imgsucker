@@ -5,8 +5,7 @@
 {% block page %}
 	Download Wallpaper 
   	{% for ta in wallpaper.tagsplit %}
-		{{ta.tag.tag|title}}
-		{% if not forloop.last %},{% endif %}
+		{{ta.tag.tag|title}}{% if not forloop.last %},{% endif %}
     {% endfor %}
     {{ w }}x{{ h }}
 {% endblock %}
@@ -59,8 +58,7 @@
 							<h1>
 						  	Download Wallpaper 
 						  	{% for ta in wallpaper.tagsplit %}
-								{{ta.tag.tag|title}}
-								{% if not forloop.last %},{% endif %}
+								{{ta.tag.tag|title}}{% if not forloop.last %},{% endif %}
 					        {% endfor %} 
 					        {{ w }}x{{ h }}
 					  		</h1>

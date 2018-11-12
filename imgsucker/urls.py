@@ -17,10 +17,20 @@ from django.contrib import admin
 from django.urls import path, include
 from imgsucker import views_admin as va
 from imgsucker import views_front as vf
+from imgsucker import views_sitemap as vs
 from django.conf import settings
 from django.conf.urls.static import static
 
 from django.conf.urls import url
+from django.contrib.sitemaps.views import sitemap
+
+from imgsucker.sitemaps import BlogSitemap
+
+
+sitemaps = {
+    'posts': BlogSitemap,
+    }
+
 
 urlpatterns = [
     # path('auth/', include('social_django.urls', namespace='social')),
@@ -83,6 +93,16 @@ urlpatterns = [
     path('user/profile/<str:username>', vf.userprofile, name='fr_userprofile'),
     path('user/edit/', vf.useredit, name='fr_useredit'),
     path('ajax/useraction', vf.ajaxuseraction, name='ajax_useraction'),
+
+   
+
+    path('sitemaps/wallpaper.xml', vs.wallpaper, name='sm_wallpaper'),
+
+     # path('sitemapa.xml', sitemap, {'sitemaps': sitemaps}, name='post_sitemap'),
+    # path('sitemaps/image.xml', vs.image, name='sm_image'),
+    path('sitemaps/tag.xml', vs.tag, name='sm_tag'),
+    path('sitemaps/category.xml', vs.category, name='sm_category'),
+
 
 ]
 

@@ -151,13 +151,13 @@
 										</td>
 									</tr> -->
 									
-									<tr>
+									<!-- <tr>
 										<th>Original Size </th>
 										<td>
 											<a href="{% url 'fr_download' wallpaper.tagtotitleslugify wallpaper.id_wallpaper wallpaper.wallpaper.width wallpaper.wallpaper.height %}">{{ wallpaper.wallpaper.width }}x{{ wallpaper.wallpaper.height }}</a>
 											
 						            	</td>
-									</tr>
+									</tr> -->
 									
 									
 								</table>
@@ -196,6 +196,13 @@
 								<h3 class="card-title">Available Resolutions for You</h3>
 
 								<table class="table">
+										<tr>
+											<td>
+												<p class="card-text"><strong>Original Size</strong></p>
+												<p class="card-text"><a href="{% url 'fr_download' wallpaper.tagtotitleslugify wallpaper.id_wallpaper wallpaper.wallpaper.width wallpaper.wallpaper.height %}">{{ wallpaper.wallpaper.width }}x{{ wallpaper.wallpaper.height }}</a></p>
+												
+							            	</td>
+										</tr>
 									{% for key, cat in availableresolutions.items %}
 										<tr>
 										<td><p class="card-text">

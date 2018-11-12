@@ -113,6 +113,9 @@ class Wallpaper(models.Model):
 		# 	result = naturalday(self.post_at)
 		return result
 
+	def get_absolute_url(self):
+		return "/wallpaper/%s_%s/" % (Wallpaper.slugtags(self), str(self.id_wallpaper))
+
 	# def thumbnailsize(self, w, h):
 	# 	max_w=400
 	# 	max_h=250
