@@ -14,7 +14,7 @@ import datetime
 
 def wallpaper(request):
 	template = loader.get_template('sitemap/wallpaper.xml')
-	walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-post_at')[:100]
+	walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-post_at')
 	# paginator = Paginator(walls, 100)
 	context = {
 		'page': 'Sitemap Wallpaper',
@@ -24,7 +24,7 @@ def wallpaper(request):
 
 def tag(request):
 	template = loader.get_template('sitemap/tag.xml')
-	tags = Tag.objects.all().order_by('-created_at')[:100]
+	tags = Tag.objects.all().order_by('-created_at')
 	# paginator = Paginator(tags, 100)
 	context = {
 		'page': 'Sitemap Tag',
@@ -35,7 +35,7 @@ def tag(request):
 
 def category(request):
 	template = loader.get_template('sitemap/category.xml')
-	categories = Category.objects.all().order_by('-created_at')[:100]
+	categories = Category.objects.all().order_by('-created_at')
 	# paginator = Paginator(tags, 100)
 	context = {
 		'page': 'Sitemap Category',
