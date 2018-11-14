@@ -3,7 +3,19 @@
 {% load thumbnail %}
 
 {% block page %}
-	{{ tag.tag }} Free wallpapers hd, desktop backgrounds, images and pictures - MostWantedWallpapers.com 
+	{% if wallpaper_tags.number > 1 %}
+		Page {{ wallpaper_tags.number }}: 
+	{% endif %}
+	{{ tag.tag }} Free wallpapers hd, desktop backgrounds, images and pictures
+	{% if sort == 'likes' %}
+		Sorted By Likes
+	{% endif %}
+	{% if sort == 'downloads' %}
+		Sorted By Downloads
+	{% endif %}
+	{% if sort == 'views' %}
+		Sorted By Views
+	{% endif %}
 {% endblock %}
 
 {% block head %}
@@ -68,7 +80,10 @@
 					<p class="card-text">{{ wall.wallpaper.wallpaper.width }}x{{ wall.wallpaper.wallpaper.height }}
 						<br>
 					{% for ta in wall.wallpaper.tagsplit %}
-						<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
+						<!-- <a href="{% url 'fr_tag' ta.tag.tag|slugify %}"> -->
+							{{ta.tag.tag|title}}
+						<!-- </a> -->
+						{% if not forloop.last %}, {% endif %}
 	                {% endfor %}
 					</p>
 	    		</div>

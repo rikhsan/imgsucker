@@ -3,7 +3,20 @@
 {% load thumbnail %}
 
 {% block page %}
-	HD Wallpaper Collections, Free Download Million Background - MostWantedWallpapers.com
+	
+	{% if wallpapers.number > 1 %}
+		Page {{ wallpapers.number }}: 
+	{% endif %}
+	HD Wallpaper Collections, Free Download Million Background 
+	{% if sort == 'likes' %}
+		Sorted By Likes
+	{% endif %}
+	{% if sort == 'downloads' %}
+		Sorted By Downloads
+	{% endif %}
+	{% if sort == 'views' %}
+		Sorted By Views
+	{% endif %}
 {% endblock %}
 
 {% block meta %}
@@ -70,7 +83,10 @@
 					<p class="card-text">{{ wall.wallpaper.width }}x{{ wall.wallpaper.height }}
 						<br>
 					{% for ta in wall.tagsplit %}
-						<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
+						<!-- <a href="{% url 'fr_tag' ta.tag.tag|slugify %}"> -->
+							{{ta.tag.tag|title}}
+						<!-- </a> -->
+						{% if not forloop.last %}, {% endif %}
 	                {% endfor %}
 					</p>
 	    		</div>

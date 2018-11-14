@@ -12,15 +12,15 @@
 {% endblock %}
 
 {% block meta %}
-<meta content="" name="author">
-<meta content="Wallpaper {% for ta in wallpaper.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} hd for pc or mac, laptop, tablet, mobile phone" name="description">
+<meta content="" name="author" />
+<meta content="Wallpaper {% for ta in wallpaper.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} hd for pc or mac, laptop, tablet, mobile phone" name="description" />
 <meta content="" name="keywords">
-<meta content="telephone=no" name="format-detection">
-<meta name="robots" content="noodp, noydir">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta content="telephone=no" name="format-detection" />
+<meta name="robots" content="noodp, noydir" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<meta name="HandheldFriendly" content="true">
-<meta content="IE=edge" http-equiv="X-UA-Compatible">
+<meta name="HandheldFriendly" content="true" />
+<meta content="IE=edge" http-equiv="X-UA-Compatible" />
 
 
 <meta property="og:title" content="Wallpaper {% for ta in wallpaper.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} image background wallpaper" />
@@ -33,8 +33,7 @@
 
 {% block head %}
 <style type="text/css">
-.container {padding:20px;}
-/*.popover {width:350px;max-width:1500px;}*/
+
 .popover-content h4 {
   color: #00A1FF;
 }
@@ -342,7 +341,10 @@
 							<p class="card-text">{{ wall.wallpaper.width }}x{{ wall.wallpaper.height }} 
 								<br>
 							{% for ta in wall.tagsplit %}
-									<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
+									<!-- <a href="{% url 'fr_tag' ta.tag.tag|slugify %}"> -->
+										{{ta.tag.tag|title}}
+									<!-- </a> -->
+									{% if not forloop.last %}, {% endif %}
 			                {% endfor %}
 							</p>
 			    		</div>
