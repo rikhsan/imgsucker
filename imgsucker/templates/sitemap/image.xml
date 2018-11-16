@@ -6,7 +6,7 @@
   <url>
     <loc>https://mostwantedwallpapers.com{% url 'fr_wallpaper' wall.slugtags wall.id_wallpaper %}</loc>
     <image:image>
-      <image:loc>https://mostwantedwallpapers.com{% url 'fr_wallpaper' wall.slugtags wall.id_wallpaper %}</image:loc>
+      <image:loc>https://mostwantedwallpapers.com{% url 'fr_image' wall.tagtotitleslugify wall.id_wallpaper wall.width wall.height %}</image:loc>
       <image:title>Wallpaper {% for ta in wall.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %},{% endif %}{% endfor %}</image:title>
       <image:caption>Desktop wallpaper {% for ta in wall.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} hd for pc or mac, laptop, tablet, mobile phone</image:caption>
     </image:image>
