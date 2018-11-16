@@ -234,7 +234,7 @@ def all(request, sort, page):
 def tag(request, tag, sort='date', page='1'):
 	# print(tag)
 	template = loader.get_template('front/v_tag.html')
-	tag_reco = Tag.objects.get(tag=tag.replace('-',' '))
+	tag_reco = Tag.objects.get(tag=tag)
 	# print(sort)
 	if sort == 'date':
 		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__post_at')
