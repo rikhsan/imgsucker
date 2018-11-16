@@ -13,8 +13,10 @@ from django.utils import timezone
 import datetime
 
 def wallpaper(request):
+	start = request.GET.get('start', 1)
+	end = request.GET.get('end', 500)
 	template = loader.get_template('sitemap/wallpaper.xml')
-	walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-post_at')
+	walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('post_at')[int(start)-1:int(end)]
 	# paginator = Paginator(walls, 100)
 	context = {
 		'page': 'Sitemap Wallpaper',
