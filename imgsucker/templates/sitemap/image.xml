@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+{% spaceless %}
+{% for wall in wallpapers %}
   <url>
+    <loc>https://mostwantedwallpapers.com{% url 'fr_wallpaper' wall.slugtags wall.id_wallpaper %}</loc>
     <image:image>
-      <image:loc>http://example.com/image.jpg</image:loc>
-      <image:title>
-      <image:caption>
+      <image:loc>https://mostwantedwallpapers.com{% url 'fr_wallpaper' wall.slugtags wall.id_wallpaper %}</image:loc>
+      <image:title>Wallpaper {% for ta in wall.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %},{% endif %}{% endfor %}</image:title>
+      <image:caption>Desktop wall {% for ta in wall.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %} hd for pc or mac, laptop, tablet, mobile phone</image:caption>
     </image:image>
-      <image:image>
-      <image:loc>http://example.com/photo.jpg</image:loc>
-      <image:title>
-      <image:caption>
-    </image:image>
+  </url>
+{% endfor %}
+{% endspaceless %}
+</urlset>
 
-    {% spaceless %}
-    {% for wall in wallpapers %}
-    
-    <url>
+
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+{% spaceless %}
+{% for wall in wallpapers %}
+  <url>
     <loc>https://mostwantedwallpapers.com{% url 'fr_wallpaper' wall.slugtags wall.id_wallpaper %}</loc>
     {% if wall.post_at %}<lastmod>{{ wall.post_at|date:"Y-m-d" }}</lastmod>{% endif %}
-    </url>
-    {% endfor %}
-    {% endspaceless %}
+   </url>
+{% endfor %}
+{% endspaceless %}
 
-  </url> 
-</urlset> 
+
+</urlset> -->

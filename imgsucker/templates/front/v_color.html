@@ -63,7 +63,7 @@
 	    <div class="col-sm-3 mb-3">
 	    	<div class="card text-center">
 	    		{% thumbnail wall.wallpaper "400x250" crop="center" as im %}
-	    			<a href="{% url 'fr_wallpaper' wall.slugtags wall.id_wallpaper %}"><img class="card-img-top" src="{{ im.url }}" alt="Wallpaper {{ wall.alt|title }}"></a>
+	    			<a href="{% url 'fr_wallpaper' wall.slugtags wall.id_wallpaper %}"><img class="card-img-top" src="{{ im.url }}" alt="Preview {% for ta in wall.tagsplit %}{{ta.tag.tag|title}}{% if not forloop.last %}, {% endif %}{% endfor %}"></a>
 	    		{% endthumbnail %}
 	    		<div class="card-body">
 					<p class="card-text">{{ wall.wallpaper.width }}x{{ wall.wallpaper.height }}

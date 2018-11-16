@@ -97,7 +97,7 @@ urlpatterns = [
    
 
     path('sitemaps/wallpaper.xml', vs.wallpaper, name='sm_wallpaper'),
-
+    path('sitemaps/image.xml', vs.image, name='sm_image'),
      # path('sitemapa.xml', sitemap, {'sitemaps': sitemaps}, name='post_sitemap'),
     # path('sitemaps/image.xml', vs.image, name='sm_image'),
     path('sitemaps/tag.xml', vs.tag, name='sm_tag'),

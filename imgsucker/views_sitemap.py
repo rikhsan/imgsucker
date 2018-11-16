@@ -43,3 +43,13 @@ def category(request):
 		'categories': categories,
     }
 	return HttpResponse(template.render(context, request), content_type='text/xml')
+
+def image(request):
+	template = loader.get_template('sitemap/image.xml')
+	walls = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-post_at')
+	# paginator = Paginator(walls, 100)
+	context = {
+		'page': 'Sitemap Image',
+		'wallpapers': walls,
+    }
+	return HttpResponse(template.render(context, request), content_type='text/xml')
