@@ -359,7 +359,7 @@
 	<div class="col">
 		<center>
 			{% for ta in tags %}
-				<a href="{% url 'fr_tag' ta.tag|slugify %}" class="mr-3">{{ ta.tag }}</a>
+				<a href="{% url 'fr_tag' ta.tag %}" class="mr-3">{{ ta.tag }}</a>
             {% endfor %}
 		</center>
 	</div>

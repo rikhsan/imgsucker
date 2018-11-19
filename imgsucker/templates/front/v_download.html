@@ -178,7 +178,7 @@
 								<p class="card-text">{{ w }}x{{ h }}
 									<br>
 								{% for ta in wall.tagsplit %}
-									<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
+									<a href="{% url 'fr_tag' ta.tag.tag %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %}, {% endif %}
 				                {% endfor %}
 								</p>
 				    		</div>
