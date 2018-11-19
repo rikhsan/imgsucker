@@ -339,7 +339,7 @@ def color(request, color, sort='date', page='1'):
 	elif sort == 'likes':
 		walls = Wallpaper.objects.filter(colors__contains=color).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-likes')
 	elif sort == 'downloads':
-		walls = Wallpaper.objects.filter(color__contains=color).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-downloads')
+		walls = Wallpaper.objects.filter(colors__contains=color).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-downloads')
 	elif sort == 'views':
 		walls = Wallpaper.objects.filter(colors__contains=color).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-views')
 	else:
