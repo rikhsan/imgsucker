@@ -25,8 +25,8 @@ from django.conf.urls import url
 from django.contrib.sitemaps.views import sitemap
 
 from imgsucker.sitemaps import BlogSitemap
-
-
+from django.views.generic.base import TemplateView
+# from django.views.generic.simple import direct_to_template
 sitemaps = {
     'posts': BlogSitemap,
     }
@@ -94,7 +94,9 @@ urlpatterns = [
     path('user/edit/', vf.useredit, name='fr_useredit'),
     path('ajax/useraction', vf.ajaxuseraction, name='ajax_useraction'),
 
-   
+    path('robot.txt', TemplateView.as_view(template_name='front/robot.txt', content_type='text/plain'), name='robot'),
+    # path('robot.txt', direct_to_template, {'template': 'front/robots.txt', 'mimetype': 'text/plain'}),
+
 
     path('sitemaps/wallpaper.xml', vs.wallpaper, name='sm_wallpaper'),
     path('sitemaps/image.xml', vs.image, name='sm_image'),
