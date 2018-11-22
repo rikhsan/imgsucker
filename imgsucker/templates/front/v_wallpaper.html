@@ -63,7 +63,7 @@
 		    <!-- <span class="badge badge-primary badge-pill">10</span> -->
 			{% for cat in categories %}
 				<li class="list-group-item">
-			    	<a href="{% url 'fr_category' cat.category|slugify|lower %}">{{ cat.category }}</a>
+			    	<a href="{% url 'fr_category' cat.category|lower %}">{{ cat.category }}</a>
 			    <!-- <span class="badge badge-primary badge-pill">10</span> -->
 			  </li>
 	        {% endfor %}
@@ -100,7 +100,7 @@
 										<td>
 											<p class="card-text">
 												{% for ta in wallpaper.tagsplit %}
-													<a href="{% url 'fr_tag' ta.tag.tag|slugify %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %},{% endif %}
+													<a href="{% url 'fr_tag' ta.tag.tag %}">{{ta.tag.tag|title}}</a>{% if not forloop.last %},{% endif %}
 							                	{% endfor %}
 											</p>
 						            	</td>

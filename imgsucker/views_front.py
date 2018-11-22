@@ -234,7 +234,7 @@ def all(request, sort, page):
 def tag(request, tag, sort='date', page='1'):
 	# print(tag)
 	template = loader.get_template('front/v_tag.html')
-	tag_reco = Tag.objects.get(tag=tag)
+	tag_reco = get_object_or_404(Tag, tag=tag)
 	# print(sort)
 	if sort == 'date':
 		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__post_at')
@@ -306,7 +306,7 @@ def image(request, title, id_wall, w, h):
 def category(request, category, sort='date', page='1'):
 	print(category)
 	template = loader.get_template('front/v_category.html')
-	category_reco = Category.objects.get(category=category.replace('-',' '))
+	category_reco = get_object_or_404(Category, category=category)
 	# print(sort)
 	if sort == 'date':
 		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-post_at')

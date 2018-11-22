@@ -75,8 +75,8 @@ urlpatterns = [
     path('color/<str:color>', vf.color, name='fr_color'),
     path('color/<str:color>/<str:sort>/page-<int:page>', vf.color, name='fr_color'),
 
-    path('category/<slug:category>', vf.category, name='fr_category'),
-    path('category/<slug:category>/<str:sort>/page-<int:page>', vf.category, name='fr_category'),
+    path('category/<str:category>', vf.category, name='fr_category'),
+    path('category/<str:category>/<str:sort>/page-<int:page>', vf.category, name='fr_category'),
 
     path('download/<str:title>_<int:id_wall>/<int:w>x<int:h>', vf.download, name='fr_download'),
 

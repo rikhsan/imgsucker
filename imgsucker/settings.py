@@ -30,7 +30,7 @@ import sys
 #        DEBUG=True 
 
 DEBUG=True 
-ALLOWED_HOSTS = ['localhost','178.128.110.195','is.rikhsan.com','mostwantedwallpapers.com', 'www.mostwantedwallpapers.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','178.128.110.195','is.rikhsan.com','mostwantedwallpapers.com', 'www.mostwantedwallpapers.com']
 
 
 # Application definition
