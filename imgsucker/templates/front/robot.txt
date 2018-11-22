@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /admin2
+Disallow: /admin
+Disallow: /user
+Allow: /image
+Allow: /wallpaper
+Allow: /tag
+Allow: /category
+Allow: /search
