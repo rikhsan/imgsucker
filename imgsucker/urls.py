@@ -94,7 +94,7 @@ urlpatterns = [
     path('user/edit/', vf.useredit, name='fr_useredit'),
     path('ajax/useraction', vf.ajaxuseraction, name='ajax_useraction'),
 
-    path('robot.txt', TemplateView.as_view(template_name='front/robot.txt', content_type='text/plain'), name='robot'),
+    path('robots.txt', TemplateView.as_view(template_name='front/robots.txt', content_type='text/plain'), name='robot'),
     # path('robot.txt', direct_to_template, {'template': 'front/robots.txt', 'mimetype': 'text/plain'}),
 
 
