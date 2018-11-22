@@ -7,7 +7,7 @@
 	{% if wallpapers.number > 1 %}
 		Page {{ wallpapers.number }}: 
 	{% endif %}
-	{{ category.category }} Free HD Desktop Wallpapers, Backgrounds, Images
+	{{ category }} Free HD Desktop Wallpapers, Backgrounds, Images
 	{% if sort == 'likes' %}
 		Sorted By Likes
 	{% endif %}
@@ -24,7 +24,7 @@
 
 {% block meta %}
 <meta content="" name="author" />
-<meta content="Best hd wallpapers of {{ category.category }}, desktop backgrounds for pc & mac, laptop, tablet, mobile phone." name="description" />
+<meta content="Best hd wallpapers of {{ category }}, desktop backgrounds for pc & mac, laptop, tablet, mobile phone." name="description" />
 <meta name="description" content="+777 Stunning Wallpapers in {{ tag.tag }} Tag" />
 <meta content="" name="keywords" />
 <meta content="telephone=no" name="format-detection" />
@@ -34,17 +34,17 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible" />
 
 
-<meta property="og:title" content="{{ category.category }} Free HD Desktop Wallpapers, Backgrounds, Images - MostWantedWallpapers" />
+<meta property="og:title" content="{{ category }} Free HD Desktop Wallpapers, Backgrounds, Images - MostWantedWallpapers" />
 <meta property="og:url" content="{{ request.get_full_path }}" />
-<meta property="og:description" content="Best hd wallpapers of {{ category.category }}, desktop backgrounds for pc & mac, laptop, tablet, mobile phone." />
-<meta property="twitter:description" content="Best hd wallpapers of {{ category.category }}, desktop backgrounds for pc & mac, laptop, tablet, mobile phone." />
+<meta property="og:description" content="Best hd wallpapers of {{ category }}, desktop backgrounds for pc & mac, laptop, tablet, mobile phone." />
+<meta property="twitter:description" content="Best hd wallpapers of {{ category }}, desktop backgrounds for pc & mac, laptop, tablet, mobile phone." />
 {% endblock %}
 
 {% block content %}
 <div class="row">
 	<div class="col">
 		<div class="d-flex">
-		  <div class="mr-auto"><h1>Category: {{ category.category }}</h1></div>
+		  <div class="mr-auto"><h1>Category: {{ category }}</h1></div>
 		  <div class="align-self-center text-black-50">
 		  	Sort By: 
 			<div class="btn-group">
@@ -53,16 +53,16 @@
 				</button>
 				<div class="dropdown-menu">
 					{% if sort != 'date' %}
-						<a class="dropdown-item" href="{% url 'fr_category' category.category|lower|slugify 'date' 1 %}">Date</a>
+						<a class="dropdown-item" href="{% url 'fr_category' category|lower 'date' 1 %}">Date</a>
 					{% endif %}
 					{% if sort != 'likes' %}
-						<a class="dropdown-item" href="{% url 'fr_category' category.category|lower|slugify 'likes' 1 %}">Likes</a>
+						<a class="dropdown-item" href="{% url 'fr_category' category|lower 'likes' 1 %}">Likes</a>
 					{% endif %}
 					{% if sort != 'downloads' %}
-						<a class="dropdown-item" href="{% url 'fr_category' category.category|lower|slugify 'downloads' 1 %}">Downloads</a>
+						<a class="dropdown-item" href="{% url 'fr_category' category|lower 'downloads' 1 %}">Downloads</a>
 					{% endif %}
 					{% if sort != 'views' %}
-						<a class="dropdown-item" href="{% url 'fr_category' category.category|lower|slugify 'views' 1 %}">Views</a>
+						<a class="dropdown-item" href="{% url 'fr_category' category|lower 'views' 1 %}">Views</a>
 					{% endif %}
 					
 				    
@@ -99,12 +99,12 @@
 	<ul class="pagination justify-content-center">
 		{% if wallpapers.number|add:-3 > 1 %}
             <li class="page-item">
-            	<a class="page-link" href="{% url 'fr_category' category.category|lower sort 1 %}">First</a>
+            	<a class="page-link" href="{% url 'fr_category' category|lower sort 1 %}">First</a>
             </li>
         {% endif %}
 		{% if wallpapers.has_previous %}
             <li class="page-item">
-				<a class="page-link" href="{% url 'fr_category' category.category|lower sort wallpapers.previous_page_number %}" tabindex="-1">Previous</a>
+				<a class="page-link" href="{% url 'fr_category' category|lower sort wallpapers.previous_page_number %}" tabindex="-1">Previous</a>
 			</li>
         {% endif %}
 		{% for i in wallpapers.paginator.page_range %}
@@ -115,7 +115,7 @@
 		        	</li>
 		        {% else %}
 		        	<li class="page-item">
-		            	<a class="page-link" href="{% url 'fr_category' category.category|lower sort i %}">{{ i }}</a>
+		            	<a class="page-link" href="{% url 'fr_category' category|lower sort i %}">{{ i }}</a>
 		        	</li>
 		        {% endif %}
 			{% endif %}
@@ -123,12 +123,12 @@
         {% endfor %}
 		{% if wallpapers.has_next %}
             <li class="page-item">
-				<a class="page-link" href="{% url 'fr_category' category.category|lower sort wallpapers.next_page_number %}">Next</a>
+				<a class="page-link" href="{% url 'fr_category' category|lower sort wallpapers.next_page_number %}">Next</a>
 			</li>
         {% endif %}
         {% if wallpapers.number|add:3 < wallpapers.paginator.num_pages %}
             <li class="page-item">
-            	<a class="page-link" href="{% url 'fr_category' category.category|lower sort wallpapers.paginator.num_pages %}">Last</a>
+            	<a class="page-link" href="{% url 'fr_category' category|lower sort wallpapers.paginator.num_pages %}">Last</a>
             </li>
         {% endif %}
 	</ul>

@@ -234,25 +234,28 @@ def all(request, sort, page):
 def tag(request, tag, sort='date', page='1'):
 	# print(tag)
 	template = loader.get_template('front/v_tag.html')
-	tag_reco = get_object_or_404(Tag, tag=tag)
-	# print(sort)
-	if sort == 'date':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__post_at')
-	elif sort == 'likes':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__likes')
-	elif sort == 'downloads':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__downloads')
-	elif sort == 'views':
-		walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__views')
-	else:
-		raise Http404
+	try:
+		tag_reco = Tag.objects.get(tag=tag)
+		if sort == 'date':
+			walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__post_at')
+		elif sort == 'likes':
+			walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__likes')
+		elif sort == 'downloads':
+			walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__downloads')
+		elif sort == 'views':
+			walls = Wallpaper_tag.objects.filter(tag=tag_reco).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-wallpaper__views')
+		else:
+			walls = []
+	except (Tag.DoesNotExist):
+		walls = []
+
 	# print(walls)
 	paginator = Paginator(walls, 16)
 	context = {
 		'page': 'Tag',
 		'wallpaper_tags': paginator.page(page),
 		'sort': sort,
-		'tag' : tag_reco,
+		'tag' : tag,
 		'form': LoginClientForm(),
 		# 'admin': User.objects.get(id=request.session['admin']),
     }
@@ -304,27 +307,29 @@ def image(request, title, id_wall, w, h):
 	return HttpResponse(img, content_type="image/jpg")
 
 def category(request, category, sort='date', page='1'):
-	print(category)
+	# print(category)
 	template = loader.get_template('front/v_category.html')
-	category_reco = get_object_or_404(Category, category=category)
-	# print(sort)
-	if sort == 'date':
-		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-post_at')
-	elif sort == 'likes':
-		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-likes')
-	elif sort == 'downloads':
-		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-downloads')
-	elif sort == 'views':
-		walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-views')
-	else:
-		raise Http404
+	try:
+		category_reco = Category.objects.get(category=category)
+		if sort == 'date':
+			walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-post_at')
+		elif sort == 'likes':
+			walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-likes')
+		elif sort == 'downloads':
+			walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-downloads')
+		elif sort == 'views':
+			walls = Wallpaper.objects.filter(category=category_reco).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('-views')
+		else:
+			walls = []
+	except (Category.DoesNotExist):
+		walls = []
 	# print(walls)
 	paginator = Paginator(walls, 16)
 	context = {
 		'page': 'Category',
 		'wallpapers': paginator.page(page),
 		'sort': sort,
-		'category' : category_reco,
+		'category' : category,
 		'form': LoginClientForm(),
 		# 'admin': User.objects.get(id=request.session['admin']),
     }

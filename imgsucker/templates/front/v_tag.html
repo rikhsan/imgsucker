@@ -6,7 +6,7 @@
 	{% if wallpaper_tags.number > 1 %}
 		Page {{ wallpaper_tags.number }}: 
 	{% endif %}
-	{{ tag.tag }} Free wallpapers hd, desktop backgrounds, images and pictures
+	{{ tag }} Free wallpapers hd, desktop backgrounds, images and pictures
 	{% if sort == 'likes' %}
 		Sorted By Likes
 	{% endif %}
@@ -25,7 +25,7 @@
 <meta content="" name="author" />
 
 
-<meta name="description" content="Best {{ tag.tag }} Free wallpaper, desktop background for any computer, laptop, tablet and phone." />
+<meta name="description" content="Best {{ tag }} Free wallpaper, desktop background for any computer, laptop, tablet and phone." />
 <meta content="" name="keywords">
 <meta content="telephone=no" name="format-detection" />
 <meta name="robots" content="noodp, noydir" />
@@ -33,17 +33,17 @@
 <meta content="IE=edge" http-equiv="X-UA-Compatible" />
 
 
-<meta property="og:title" content="{{ tag.tag }} Free wallpapers hd, desktop backgrounds, images and pictures - MostWantedWallpapers.com " />
+<meta property="og:title" content="{{ tag }} Free wallpapers hd, desktop backgrounds, images and pictures - MostWantedWallpapers.com " />
 <meta property="og:url" content="{{ request.get_full_path }}" />
-<meta property="og:description" content="Best {{ tag.tag }} Free wallpaper, desktop background for any computer, laptop, tablet and phone." />
-<meta property="twitter:description" content="Best {{ tag.tag }} Free wallpaper, desktop background for any computer, laptop, tablet and phone." />
+<meta property="og:description" content="Best {{ tag }} Free wallpaper, desktop background for any computer, laptop, tablet and phone." />
+<meta property="twitter:description" content="Best {{ tag }} Free wallpaper, desktop background for any computer, laptop, tablet and phone." />
 {% endblock %}
 
 {% block content %}
 <div class="row">
 	<div class="col">
 		<div class="d-flex">
-		  <div class="mr-auto"><h1>Tag: {{ tag.tag }}</h1></div>
+		  <div class="mr-auto"><h1>Tag: {{ tag }}</h1></div>
 		  <div class="align-self-center text-black-50">
 		  	Sort By: 
 			<div class="btn-group">
@@ -52,16 +52,16 @@
 				</button>
 				<div class="dropdown-menu">
 					{% if sort != 'date' %}
-						<a class="dropdown-item" href="{% url 'fr_tag' tag.tag 'date' 1 %}">Date</a>
+						<a class="dropdown-item" href="{% url 'fr_tag' tag 'date' 1 %}">Date</a>
 					{% endif %}
 					{% if sort != 'likes' %}
-						<a class="dropdown-item" href="{% url 'fr_tag' tag.tag 'likes' 1 %}">Likes</a>
+						<a class="dropdown-item" href="{% url 'fr_tag' tag 'likes' 1 %}">Likes</a>
 					{% endif %}
 					{% if sort != 'downloads' %}
-						<a class="dropdown-item" href="{% url 'fr_tag' tag.tag 'downloads' 1 %}">Downloads</a>
+						<a class="dropdown-item" href="{% url 'fr_tag' tag 'downloads' 1 %}">Downloads</a>
 					{% endif %}
 					{% if sort != 'views' %}
-						<a class="dropdown-item" href="{% url 'fr_tag' tag.tag 'views' 1 %}">Views</a>
+						<a class="dropdown-item" href="{% url 'fr_tag' tag 'views' 1 %}">Views</a>
 					{% endif %}
 				</div>
 			</div>
@@ -96,12 +96,12 @@
 	<ul class="pagination justify-content-center">
 		{% if wallpaper_tags.number|add:-3 > 1 %}
             <li class="page-item">
-            	<a class="page-link" href="{% url 'fr_tag' tag.tag sort 1 %}">First</a>
+            	<a class="page-link" href="{% url 'fr_tag' tag sort 1 %}">First</a>
             </li>
         {% endif %}
 		{% if wallpaper_tags.has_previous %}
             <li class="page-item">
-				<a class="page-link" href="{% url 'fr_tag' tag.tag sort wallpaper_tags.previous_page_number %}" tabindex="-1">Previous</a>
+				<a class="page-link" href="{% url 'fr_tag' tag sort wallpaper_tags.previous_page_number %}" tabindex="-1">Previous</a>
 			</li>
         {% endif %}
 		{% for i in wallpaper_tags.paginator.page_range %}
@@ -112,7 +112,7 @@
 		        	</li>
 		        {% else %}
 		        	<li class="page-item">
-		            	<a class="page-link" href="{% url 'fr_tag' tag.tag sort i %}">{{ i }}</a>
+		            	<a class="page-link" href="{% url 'fr_tag' tag sort i %}">{{ i }}</a>
 		        	</li>
 		        {% endif %}
 			{% endif %}
@@ -120,12 +120,12 @@
         {% endfor %}
 		{% if wallpaper_tags.has_next %}
             <li class="page-item">
-				<a class="page-link" href="{% url 'fr_tag' tag.tag sort wallpaper_tags.next_page_number %}">Next</a>
+				<a class="page-link" href="{% url 'fr_tag' tag sort wallpaper_tags.next_page_number %}">Next</a>
 			</li>
         {% endif %}
         {% if wallpaper_tags.number|add:3 < wallpaper_tags.paginator.num_pages %}
             <li class="page-item">
-            	<a class="page-link" href="{% url 'fr_tag' tag.tag sort wallpaper_tags.paginator.num_pages %}">Last</a>
+            	<a class="page-link" href="{% url 'fr_tag' tag sort wallpaper_tags.paginator.num_pages %}">Last</a>
             </li>
         {% endif %}
 	</ul>
