@@ -487,7 +487,7 @@ def getrelatedwallpaper(wall, limit, w, h):
 			related_tag = Wallpaper_tag.objects.filter(~Q(wallpaper__id_wallpaper__in = ar_rw_ids)).filter(tag= wt.tag, wallpaper__height__gte=h, wallpaper__width__gte=w).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()[:limit]
 		else:
 			related_tag = Wallpaper_tag.objects.filter(~Q(wallpaper__id_wallpaper__in = ar_rw_ids)).filter(tag= wt.tag).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()
-			
+
 		for rt in related_tag:
 			ar_rw_ids.append(rt['wallpaper'])
 			# ar_rw.append(rt['wallpaper'])
@@ -506,7 +506,7 @@ def getrelatedwallpaper(wall, limit, w, h):
 
 
 	if len(ar_rw_ids)-1 < limit:
-		additional = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).exclude(id_wallpaper_in = ar_rw_ids).order_by('?')[:limit-len(ar_rw_ids)-1-1]
+		additional = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).filter(~Q(id_wallpaper__in = ar_rw_ids)).order_by('?')[:limit-len(ar_rw_ids)-1-1]
 		for addi in additional:
 			ar_rw_ids.append(addi.id_wallpaper)
 			related_walls.append(additional)
