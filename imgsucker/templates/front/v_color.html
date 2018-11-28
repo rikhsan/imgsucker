@@ -83,12 +83,12 @@
 	<ul class="pagination justify-content-center">
 		{% if wallpapers.number|add:-3 > 1 %}
             <li class="page-item">
-            	<a class="page-link" href="{% url 'fr_color' sort 1 %}">First</a>
+            	<a class="page-link" href="{% url 'fr_color' color sort 1 %}">First</a>
             </li>
         {% endif %}
 		{% if wallpapers.has_previous %}
             <li class="page-item">
-				<a class="page-link" href="{% url 'fr_color' sort wallpapers.previous_page_number %}" tabindex="-1">Previous</a>
+				<a class="page-link" href="{% url 'fr_color' color sort wallpapers.previous_page_number %}" tabindex="-1">Previous</a>
 			</li>
         {% endif %}
 		{% for i in wallpapers.paginator.page_range %}
@@ -99,7 +99,7 @@
 		        	</li>
 		        {% else %}
 		        	<li class="page-item">
-		            	<a class="page-link" href="{% url 'fr_color' sort i %}">{{ i }}</a>
+		            	<a class="page-link" href="{% url 'fr_color' color sort i %}">{{ i }}</a>
 		        	</li>
 		        {% endif %}
 			{% endif %}
@@ -107,12 +107,12 @@
         {% endfor %}
 		{% if wallpapers.has_next %}
             <li class="page-item">
-				<a class="page-link" href="{% url 'fr_color' sort wallpapers.next_page_number %}">Next</a>
+				<a class="page-link" href="{% url 'fr_color' color sort wallpapers.next_page_number %}">Next</a>
 			</li>
         {% endif %}
         {% if wallpapers.number|add:3 < wallpapers.paginator.num_pages %}
             <li class="page-item">
-            	<a class="page-link" href="{% url 'fr_color' sort wallpapers.paginator.num_pages %}">Last</a>
+            	<a class="page-link" href="{% url 'fr_color' color sort wallpapers.paginator.num_pages %}">Last</a>
             </li>
         {% endif %}
 	</ul>
