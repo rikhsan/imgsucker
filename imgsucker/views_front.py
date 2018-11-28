@@ -335,7 +335,7 @@ def category(request, category, sort='date', page='1'):
     }
 	return HttpResponse(template.render(context, request))
 
-def color(request, color, sort='date', page='1'):
+def color(request, color, sort='date', page=1):
 	template = loader.get_template('front/v_color.html')
 	# category_reco = Category.objects.get(id_category=id)
 	# print(sort)
