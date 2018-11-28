@@ -2,6 +2,10 @@ User-agent: *
 Disallow: /admin2
 Disallow: /admin
 Disallow: /user
+Disallow: /user
+Disallow: /auth
+Disallow: /needlogin
+
 Allow: /image
 Allow: /wallpaper
 Allow: /tag

@@ -391,7 +391,7 @@ def wallpaper(request, tags, id):
 		'categories': Category.objects.all(),
 		'tags': Tag.objects.all().order_by('?')[:50],
 		# 'relatedwalls': Wallpaper.objects.order_by('?')[:6],
-		'relatedwalls': getrelatedwallpaper(wallpaper,7, None, None),
+		'relatedwalls': getrelatedwallpaper(wallpaper,10, None, None),
 		'availableresolutions':availableresolutions(wallpaper),
 		'form': LoginClientForm(),
 		'is_liked': is_liked,
@@ -439,36 +439,85 @@ def download(request, title, id_wall, w, h):
 	return HttpResponse(template.render(context, request))
 
 from django.db.models import Q
+# def getrelatedwallpaper(wall, limit, w, h):
+# 	wall_tags= Wallpaper_tag.objects.filter(wallpaper=wall)
+# 	tags = []
+# 	for wt in wall_tags:
+# 		tags.append(wt.tag)
+
+# 	if w and h:
+# 		# print(h)
+# 		related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags, wallpaper__height__gte=h, wallpaper__width__gte=w).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()[:limit]
+# 	else:
+# 		related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()[:limit]
+		
+
+# 	ar_rw=[]
+# 	ar_rw_ids=[]
+# 	ar_rw_ids.append(wall.id_wallpaper)
+# 	for rw in related:
+# 		ar_rw_ids.append(rw['wallpaper'])
+# 		ar_rw.append(rw['wallpaper'])
+
+# 	if len(ar_rw) < limit:
+# 		additional = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).exclude(id_wallpaper_in = ar_rw_ids).order_by('?')[:limit]
+# 		for addi in additional:
+# 			ar_rw.append(addi.id_wallpaper)
+
+# 	# fore
+# 	# while len(ar_rw) < limit:
+# 	# 	additional_wall = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').first()
+# 	# 	if additional_wall.id_wallpaper not in ar_rw:
+# 	# 		ar_rw.append(additional_wall.id_wallpaper)
+
+# 	related_walls= Wallpaper.objects.filter(id_wallpaper__in= ar_rw).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
+# 	# for rel in related:
+# 	# 	related_walls.append(rel.wallpaper)
+# 	return related_walls
+
 def getrelatedwallpaper(wall, limit, w, h):
+	# ar_rw=[]
+	ar_rw_ids=[]
+	ar_rw_ids.append(wall.id_wallpaper)
+	related_walls=[]
 	wall_tags= Wallpaper_tag.objects.filter(wallpaper=wall)
 	tags = []
 	for wt in wall_tags:
-		tags.append(wt.tag)
+		if w and h:
+			related_tag = Wallpaper_tag.objects.filter(~Q(wallpaper__id_wallpaper__in = ar_rw_ids)).filter(tag= wt.tag, wallpaper__height__gte=h, wallpaper__width__gte=w).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()[:limit]
+		else:
+			related_tag = Wallpaper_tag.objects.filter(~Q(wallpaper__id_wallpaper__in = ar_rw_ids)).filter(tag= wt.tag).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()
+			
+		for rt in related_tag:
+			ar_rw_ids.append(rt['wallpaper'])
+			# ar_rw.append(rt['wallpaper'])
+			related_walls.append(Wallpaper.objects.get(id_wallpaper=rt['wallpaper']))
+			if len(ar_rw_ids)-1 >= limit:
+				break
+		if len(ar_rw_ids)-1 >= limit:
+				break
+	
+	# if w and h:
+	# 	# print(h)
+	# 	related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags, wallpaper__height__gte=h, wallpaper__width__gte=w).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()[:limit]
+	# else:
+	# 	related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()[:limit]
+		
 
-	if w and h:
-		print(h)
-		related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags, wallpaper__height__gte=h, wallpaper__width__gte=w).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()[:limit]
-	else:
-		related = Wallpaper_tag.objects.filter(~Q(wallpaper = wall)).filter(tag__in= tags).filter(wallpaper__post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').values('wallpaper').distinct()[:limit]
-	ar_rw=[]
-	ar_rw_ids=[]
-	ar_rw_ids.append(wall.id_wallpaper)
-	for rw in related:
-		ar_rw_ids.append(rw['wallpaper'])
-		ar_rw.append(rw['wallpaper'])
 
-	if len(ar_rw) < limit:
-		additional = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).exclude(id_wallpaper_in = ar_rw_ids).order_by('?')[:limit]
+	if len(ar_rw_ids)-1 < limit:
+		additional = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).exclude(id_wallpaper_in = ar_rw_ids).order_by('?')[:limit-len(ar_rw_ids)-1-1]
 		for addi in additional:
-			ar_rw.append(addi.id_wallpaper)
+			ar_rw_ids.append(addi.id_wallpaper)
+			related_walls.append(additional)
 
 	# fore
 	# while len(ar_rw) < limit:
 	# 	additional_wall = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).order_by('?').first()
 	# 	if additional_wall.id_wallpaper not in ar_rw:
 	# 		ar_rw.append(additional_wall.id_wallpaper)
-
-	related_walls= Wallpaper.objects.filter(id_wallpaper__in= ar_rw).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
+	# ar_rw_ids.remove(wall.id_wallpaper)
+	# related_walls= Wallpaper.objects.filter(id_wallpaper__in= ar_rw_ids).filter(post_at__lte=datetime.datetime.now(tz=timezone.utc))
 	# for rel in related:
 	# 	related_walls.append(rel.wallpaper)
 	return related_walls
