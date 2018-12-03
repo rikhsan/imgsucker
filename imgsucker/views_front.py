@@ -506,7 +506,7 @@ def getrelatedwallpaper(wall, limit, w, h):
 
 
 	if len(ar_rw_ids)-1 < limit:
-		additional = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).filter(~Q(id_wallpaper__in = ar_rw_ids)).order_by('?')[:-1]
+		additional = Wallpaper.objects.filter(post_at__lte=datetime.datetime.now(tz=timezone.utc)).filter(~Q(id_wallpaper__in = ar_rw_ids)).order_by('?')[:limit-len(ar_rw_ids)+1]
 		for addi in additional:
 			ar_rw_ids.append(addi.id_wallpaper)
 			related_walls.append(addi)
